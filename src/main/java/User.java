@@ -8,10 +8,12 @@ public class User {
     private String type;
     private String bank;
     private double balance;
+    private Category catogories;
 
     private static int userCounter;
     public static ArrayList<User> datos = new ArrayList<>();
     public Transaction selectTransaction;
+    private String selectCategory;
     //Atributos static: Se comparten entre todas las instancias. Solo existe una copia de la variable para toda la clase, por lo que las listas es ideal que solo exista una copia ya que aquí se guardarán a todos los usuarios
     //Métodos static: Pueden ser llamados sin necesidad de crear una instancia de la clase.
 
@@ -23,6 +25,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.catogories = new Category();
         datos.add(this);
     }
 
@@ -44,6 +47,10 @@ public class User {
 
     public int getTotalGasto(){
         return gastoUser.size();
+    }
+
+    public Category getCatogories(){
+        return this.catogories;
     }
 
     public void setName(String name){
@@ -227,6 +234,4 @@ public class User {
                 ", password='" + password + '\'' +
                 '}';
     }
-
-
 }

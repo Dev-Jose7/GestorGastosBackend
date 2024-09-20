@@ -133,34 +133,14 @@ public class Main {
 
         do{
             System.out.println("Escoja una categoria: ");
-            System.out.println("1. Salario");
-            System.out.println("2. Arriendo");
-            System.out.println("3. Comisiones");
-            System.out.println("4. Servicios");
+            user.getCatogories().printCategoriesByUser();
             option = lector.nextInt();
-
-            switch (option){
-                case 1:
-                    category = "Salario";
-                    break;
-
-                case 2:
-                    category = "Arriendo";
-                    break;
-
-                case 3:
-                    category = "Comisiones";
-                    break;
-
-                case 4:
-                    category = "Servicios";
-                    break;
-
-                default:
-                    System.out.println("Digite una opcion correcta");
-                    break;
+            if(option > 0 && option <= user.getCatogories().categoriesByUserSize()){
+                category = user.getCatogories().selectCategory(option);
+            }else if(option <= 0 && option > user.getCatogories().categoriesByUserSize()){
+                System.out.println("Digite un número entre 1 y " + user.getCatogories().categoriesByUserSize());
             }
-        }while(option > 4);
+        }while(option > user.getCatogories().categoriesByUserSize());
 
         switch (type){
             case 1:
@@ -254,7 +234,8 @@ public class Main {
             System.out.println("Gastos registrados: " + user.getTotalGasto());
             System.out.println("1. Dashboard");
             System.out.println("2. Modificar datos");
-            System.out.println("3. Cerrar sesión");
+            System.out.println("3. Lista de categorias");
+            System.out.println("4. Cerrar sesión");
             System.out.println("=========================");
             option = lector.nextInt();
 
@@ -268,7 +249,12 @@ public class Main {
                     break;
 
                 case 3:
+                    categoriesUser(user);
+                    break;
+
+                case 4:
                     user.logout();
+                    break;
 
                 default:
                     System.out.println("Digite una opcion correcta");
@@ -333,5 +319,86 @@ public class Main {
                     break;
             }
         }while (option > 4);
+    }
+
+    public static void categoriesUser(User user){
+        int option;
+        do{
+            System.out.println("======MONEY MANAGER======");
+            System.out.println("=====LISTA CATEGORIAS====");
+            user.getCatogories().printCategoriesByUser();
+            System.out.println("");
+            System.out.println("Digite el número de la opción a eligir");
+            System.out.println("1. Crear categoria");
+            System.out.println("2. Eliminar categoria");
+            System.out.println("3. Consultar cuenta");
+            option = lector.nextInt();
+
+            switch (option){
+                case 1:
+                    addCategory(user);
+                    break;
+
+                case 2:
+                    deleteCategory(user);
+                    break;
+
+                case 3:
+                    selectUser(user);
+                    break;
+            }
+        }while(option > 3);
+    }
+
+    public static void addCategory(User user) {
+        Boolean status;
+        do{
+            System.out.println("======MONEY MANAGER======");
+            System.out.println("=====AÑADIR CATEGORIA====");
+            System.out.println("Digite un nombre a la categoria");
+            String categoryName = lector.next();
+
+            status = user.getCatogories().validateCategory(categoryName);
+
+            if(status){
+                System.out.println("Esta categoria ya existe en la lista, por favor cree una nueva");
+            }else if(status == false){
+                user.getCatogories().addCategories(categoryName);
+                System.out.println("Categoria creada con exito");
+                categoriesUser(user);
+            }
+        }while(status);
+    }
+
+    public static void deleteCategory(User user){
+        int confirm;
+
+        do{
+            System.out.println("======MONEY MANAGER======");
+            System.out.println("=====ELIMINAR CATEGORIA====");
+            user.getCatogories().printCategoriesByUser();
+            System.out.println("Digite el número de la categoria a eliminar");
+            int option = lector.nextInt();
+
+            System.out.println("¿Esta seguro de eliminar esta categoria?: " + user.getCatogories().selectCategory(option));
+            System.out.println("1. Si");
+            System.out.println("2. No");
+            confirm = lector.nextInt();
+
+            switch (confirm){
+                case 1:
+                    if(option > 0 && option <= user.getCatogories().categoriesByUserSize()){
+                        user.getCatogories().deleteCategories(option);
+                        System.out.println("Categoria eliminada");
+                    } else if(option <= 0 && option > user.getCatogories().categoriesByUserSize()){
+                        System.out.println("Digite un número valido entre 1 y " + user.getCatogories().categoriesByUserSize());
+                    }
+                    break;
+
+                case 2:
+                    categoriesUser(user);
+                    break;
+            }
+        }while(confirm > 2);
     }
 }
