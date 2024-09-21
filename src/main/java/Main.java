@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,8 +10,9 @@ public class Main {
         //Instancias de prueba
         User admin = new User("José", "jfnr398", "1234");
         User user = new User("Fernando" ,"fercho398", "4321");
-        Transaction transaction = new Ingreso(1, 6500, "pagoNomina", "Salario");
-        Transaction transaction1 = new Gasto(1, 1400, "pagoArriendo", "Arriendo");
+        admin.getTransactions().createTransaction(1, "Ingreso", 6500, "pagoNomina", user.getCatogories().selectCategory(1));
+        admin.getTransactions().createTransaction(1, "Gasto", 1400, "pagoArriendo", user.getCatogories().selectCategory(2));
+
         menu();
     }
 
@@ -85,15 +87,16 @@ public class Main {
             System.out.println("En gastos: " + user.sumaGastos());
             System.out.println("======TRANSACCIONES======");
             System.out.println("De ingresos: ");
-            user.printIngreso();
+            user.getTransactions().printListIngresos();
             System.out.println("De gastos: ");
-            user.printGasto();
+            user.getTransactions().printListGastos();
             System.out.println("========OPCIONES=========");
             System.out.println("1. Registrar ingreso");
             System.out.println("2. Registrar gasto");
             System.out.println("3. Modificar transacción");
             System.out.println("4. Eliminar transaccion");
-            System.out.println("5. Consultar cuenta");
+            System.out.println("5. Filtrar transacciones");
+            System.out.println("6. Consultar cuenta");
             System.out.println("=========================");
             option = lector.nextInt();
 
@@ -102,9 +105,10 @@ public class Main {
             } else if(option == 3){
                 updateTransaction(user);
             } else if(option == 4){
-                user.getTransactionOnList();
                 deleteTransaction(user);
             } else if(option == 5){
+                filterTransaction(user);
+            } else if(option == 6){
                 selectUser(user);
             }
         }while(option > 3);
@@ -144,18 +148,18 @@ public class Main {
 
         switch (type){
             case 1:
-                user.createTransaction("Ingreso", value, description, category);
+                user.getTransactions().createTransaction(user.getId(), "Ingreso", value, description, category);
                 break;
 
             case 2:
-                user.createTransaction("Gasto", value, description, category);
+                user.getTransactions().createTransaction(user.getId(), "Gasto", value, description, category);
                 break;
 
             case 3: //Modificar transacción
                 if(register == 1){
-                    user.updateTransaction("Ingreso", value, description, category);
+                    user.getTransactions().updateTransaction("Ingreso", value, description, category);
                 } else if (register == 2){
-                    user.updateTransaction("Gasto", value, description, category);
+                    user.getTransactions().updateTransaction("Gasto", value, description, category);
                 }
                 break;
         }
@@ -168,16 +172,16 @@ public class Main {
         do {
             System.out.println("======MONEY MANAGER======");
             System.out.println("========MODIFICAR========");
-            user.printTransactionOnList();
+            user.getTransactions().printListUser();
             System.out.print("Digite el número de la transacción a modificar: ");
             option = lector.nextInt();
 
-            if(option > user.getTransactionOnList().size()){
+            if(option > user.getTransactions().getListUser().size()){
                 System.out.println("Digite un número valido");
             }
-        }while (option > user.getTransactionOnList().size());
+        }while (option > user.getTransactions().getListUser().size());
 
-        user.takeTransaction(option);
+        user.getTransactions().selectTransaction(option);
         menuTransaccion(3, user);
     }
 
@@ -186,21 +190,21 @@ public class Main {
         do{
             System.out.println("======MONEY MANAGER======");
             System.out.println("========ELIMINAR========");
-            user.printTransactionOnList();
+            user.getTransactions().printListUser();
             System.out.print("Digite el número de la transacción a eliminar: ");
             option = lector.nextInt();
 
-            if(option > user.getTransactionOnList().size()){
+            if(option > user.getTransactions().getListUser().size()){
                 System.out.println("Digite un número valido");
             }
-        }while(option > user.getTransactionOnList().size());
+        }while(option > user.getTransactions().getListUser().size());
 
-        user.takeTransaction(option);
+        user.getTransactions().selectTransaction(option);
         int confirm;
 
         do {
             System.out.println("Estas seguro de eliminar esta transacción");
-            System.out.println(user.selectTransaction);
+            System.out.println(user.getTransactions().getTargetTransaction());
             System.out.println("1. Si");
             System.out.println("2. No");
             confirm = lector.nextInt();
@@ -208,7 +212,7 @@ public class Main {
             switch (confirm) {
                 case 1:
                     System.out.println("Transacción eliminada");
-                    user.deleteTransaction();
+                    user.getTransactions().deleteTransaction();
                     dashboard(user);
                     break;
 
@@ -223,6 +227,102 @@ public class Main {
         }while (confirm > 2);
     }
 
+    public static void filterTransaction(User user){
+        Boolean status = null;
+        do{
+            System.out.println("======MONEY MANAGER======");
+            System.out.println("=========FILTRAR=========");
+            System.out.println("Digite el número del tipo de filtro a consultar");
+            System.out.println("1. Tipo");
+            System.out.println("2. Valor");
+            System.out.println("3. Categoria");
+            System.out.println("4. Fecha");
+            System.out.println("Para iniciar con la consulta digite 0");
+            System.out.println("0. Consultar");
+            int option = lector.nextInt();
+
+            for (int i = 0; i < user.getTransactions().getDataFilter().length; i++) {
+                System.out.println("[" + user.getTransactions().getDataFilter()[i] + "]" );
+            }
+
+            if(option != 0){
+                status = true;
+            }else if (option == 0){
+                status = false;
+            }
+
+            switch (option){
+                case 0:
+                    ArrayList<Transaction> filter = user.getTransactions().filter();
+                    user.getTransactions().printListFilter(filter);
+                    break;
+
+                case 1:
+                    typeFilterTransaction(user);
+                    break;
+
+                case 2:
+                    valueFilterTransaction(user);
+                    break;
+
+                case 3:
+                    categoryFilterTransaction(user);
+                    break;
+
+                case 4:
+                    dateFilterTransaction(user);
+
+                default:
+                    System.out.println("Opción invalida");
+                    break;
+            }
+        }while(status);
+    }
+
+    public static void typeFilterTransaction(User user){
+        System.out.println("Digite el número de la opción a seleccionar");
+        System.out.println("1. Ingreso");
+        System.out.println("2. Gasto");
+        int option = lector.nextInt();
+
+        if(option == 1){
+            user.getTransactions().getDataFilter()[0] = "Ingreso";
+        } else if(option == 2){
+            user.getTransactions().getDataFilter()[0] = "Gasto";
+        }
+    }
+
+    public static void valueFilterTransaction(User user){
+        System.out.print("Digite un valor: ");
+        int option = lector.nextInt();
+
+        user.getTransactions().getDataFilter()[1] = option + "";
+    }
+
+    public static void categoryFilterTransaction(User user){
+        int option;
+        String category = "";
+        do{
+            System.out.println("Digite el número de la opción a seleccionar");
+            user.getCatogories().printCategoriesByUser();
+            option = lector.nextInt();
+            if(option > 0 && option <= user.getCatogories().categoriesByUserSize()){
+                category = user.getCatogories().selectCategory(option);
+            }else if(option <= 0 && option > user.getCatogories().categoriesByUserSize()){
+                System.out.println("Digite un número entre 1 y " + user.getCatogories().categoriesByUserSize());
+            }
+        }while(option > user.getCatogories().categoriesByUserSize());
+
+        user.getTransactions().getDataFilter()[2] = category;
+    }
+
+    private static void dateFilterTransaction(User user) {
+        System.out.print("Digite la fecha a consultar de la siguiente forma: " + LocalDate.now());
+        String option = lector.next();
+
+        user.getTransactions().getDataFilter()[3] = option;
+    }
+
     public static void selectUser(User user){
         int option;
         do{
@@ -230,8 +330,8 @@ public class Main {
             System.out.println("======CUENTA USUARIO=====");
             System.out.println("Nombre: " + user.getName());
             System.out.println("Email: " + user.getEmail());
-            System.out.println("Ingresos registrados: " + user.getTotalIngreso());
-            System.out.println("Gastos registrados: " + user.getTotalGasto());
+            System.out.println("Ingresos registrados: " + user.getTransactions().getTotalIngreso());
+            System.out.println("Gastos registrados: " + user.getTransactions().getTotalGasto());
             System.out.println("1. Dashboard");
             System.out.println("2. Modificar datos");
             System.out.println("3. Lista de categorias");

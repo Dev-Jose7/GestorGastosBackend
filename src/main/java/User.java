@@ -8,25 +8,28 @@ public class User {
     private String type;
     private String bank;
     private double balance;
+    private Transaction transactions;
     private Category catogories;
 
     private static int userCounter;
-    public static ArrayList<User> datos = new ArrayList<>();
+    private static ArrayList<User> datos = new ArrayList<>();
     public Transaction selectTransaction;
     private String selectCategory;
     //Atributos static: Se comparten entre todas las instancias. Solo existe una copia de la variable para toda la clase, por lo que las listas es ideal que solo exista una copia ya que aquí se guardarán a todos los usuarios
     //Métodos static: Pueden ser llamados sin necesidad de crear una instancia de la clase.
-
-    public ArrayList<Transaction> ingresoUser = new ArrayList<Transaction>();
-    public ArrayList<Transaction> gastoUser = new ArrayList<Transaction>();
 
     public User(String name, String email, String password) {//CreateUser - Constructor
         this.id = ++userCounter;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.transactions = new Transaction();
         this.catogories = new Category();
         datos.add(this);
+    }
+
+    public int getId(){
+        return this.id;
     }
 
     public String getName() {
@@ -41,16 +44,12 @@ public class User {
         return this.password;
     }
 
-    public int getTotalIngreso(){
-        return ingresoUser.size();
-    }
-
-    public int getTotalGasto(){
-        return gastoUser.size();
-    }
-
     public Category getCatogories(){
         return this.catogories;
+    }
+
+    public Transaction getTransactions(){
+        return this.transactions;
     }
 
     public void setName(String name){
@@ -78,21 +77,21 @@ public class User {
     }
 
     public double sumaIngresos(){
-        loadIngreso();
-
         double total = 0;
-        for (int i = 0; i < ingresoUser.size(); i++) {
-            total += ingresoUser.get(i).getValue();
+        for (int i = 0; i < this.transactions.getListUser().size(); i++) {
+            if(this.transactions.getListUser().get(i).getType().equals("Ingreso")){
+                total += this.transactions.getListUser().get(i).getValue();
+            }
         }
         return total;
     }
 
     public double sumaGastos(){
-        loadGasto();
-
         double total = 0;
-        for (int i = 0; i < gastoUser.size(); i++) {
-            total += gastoUser.get(i).getValue();
+        for (int i = 0; i < this.transactions.getListUser().size(); i++) {
+            if(this.transactions.getListUser().get(i).getType().equals("Gasto")){
+                total += this.transactions.getListUser().get(i).getValue();
+            }
         }
         return total;
     }
@@ -102,123 +101,6 @@ public class User {
         double gasto = sumaGastos();
         double total = ingreso - gasto;
         return total;
-    }
-
-    public void loadIngreso(){
-        Transaction.userIngreso(this.id, this.ingresoUser);
-    }
-
-    public void loadGasto(){
-        Transaction.userGasto(this.id, this.gastoUser);
-    }
-
-    public void printIngreso(){
-        this.ingresoUser.forEach(System.out::println);
-    }
-
-    public void printGasto(){
-        this.gastoUser.forEach(System.out::println);
-    }
-
-    public void updateUser(){
-
-    };
-
-    public void createTransaction(String type, double value, String description, String category){
-        if(type.equals("Ingreso")){
-            Ingreso transaction = new Ingreso(this.id, value, description, category);
-        } else if(type.equals("Gasto")){
-            Gasto transaction = new Gasto(this.id, value, description, category);
-        }
-
-        Transaction.printData();
-    }
-
-    public ArrayList<Transaction> getTransactionOnList(){ //Permite tener todas las transacciones almacenadas de ingresoUser y gastoUser
-        ArrayList<Transaction> transaction = new ArrayList<Transaction>();
-
-        for (int i = 0; i < ingresoUser.size(); i++) {
-            transaction.add(ingresoUser.get(i));
-        }
-
-        for (int i = 0; i < gastoUser.size(); i++) {
-            transaction.add(gastoUser.get(i));
-        }
-
-        return transaction;
-    }
-
-    public void printTransactionOnList(){
-        ArrayList<Transaction> transactionList = getTransactionOnList();
-        for (int i = 0; i < transactionList.size(); i++) {
-            System.out.println(i+1 + ". " + transactionList.get(i));
-        }
-    }
-
-    public void takeTransaction(int option){ //Obtiene la transacción especifica de la lista en donde se guardarán todas las transacciones del usuario para seguidamente buscar esta transacción seleccionada desde la base de datos de la transacciones
-        ArrayList<Transaction> transactionList = getTransactionOnList();
-
-        Transaction transaction = transactionList.get(option - 1);
-
-        for (int i = 0; i < Transaction.ingresos.size(); i++) {
-            if(transaction == Transaction.ingresos.get(i)){
-                selectTransaction = Transaction.ingresos.get(i);
-            }
-        }
-
-        for (int i = 0; i < Transaction.gastos.size(); i++) {
-            if(transaction == Transaction.gastos.get(i)){
-                selectTransaction = Transaction.gastos.get(i);
-            }
-        }
-
-    }
-
-    public void updateTransaction(String type, int value, String description, String category){
-        if(selectTransaction.getType() != type){
-            if(type == "Ingreso"){
-                Transaction.ingresos.add(selectTransaction);
-
-                for (int i = 0; i < Transaction.gastos.size(); i++) {
-                    if(selectTransaction == Transaction.gastos.get(i)){
-                        Transaction.gastos.remove(i);
-                    }
-                }
-            }else if(type == "Gasto"){
-                Transaction.gastos.add(selectTransaction);
-
-                for (int i = 0; i < Transaction.ingresos.size(); i++) {
-                    if(selectTransaction == Transaction.ingresos.get(i)){
-                        Transaction.ingresos.remove(i);
-                    }
-                }
-            }
-        }
-
-        selectTransaction.setType(type);
-        selectTransaction.setValue(value);
-        selectTransaction.setDescription(description);
-        selectTransaction.setCategory(category);
-
-        Transaction.printData();
-    }
-
-    public void deleteTransaction(){
-        for (int i = 0; i < Transaction.ingresos.size(); i++) {
-            if(selectTransaction == Transaction.ingresos.get(i)){
-                Transaction.ingresos.remove(i);
-                break;
-            }
-        }
-
-        for (int i = 0; i < Transaction.gastos.size(); i++) {
-            if(selectTransaction == Transaction.gastos.get(i)){
-                Transaction.gastos.remove(i);
-                break;
-            }
-        }
-
-        Transaction.printData();
     }
 
     public void logout(){
