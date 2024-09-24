@@ -1,5 +1,7 @@
-import java.time.LocalTime;
+package Classes;
+
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Transaction{
@@ -9,11 +11,12 @@ public class Transaction{
     private double value;
     private String description;
     private String category;
-    private LocalDate date;
-    private LocalTime hour;
+    private String date;
+    private String hour;
 
     private Transaction targetTransaction;
     private ArrayList<Transaction> transactions = new ArrayList<>();
+    private ArrayList<Transaction> filterTransactions = new ArrayList<>();
     private ArrayList<Transaction> ingresos = new ArrayList<Transaction>();
     private ArrayList<Transaction> gastos = new ArrayList<Transaction>();
     private String[] dataFilter = new String[4];
@@ -30,8 +33,7 @@ public class Transaction{
         this.value = value;
         this.description = description;
         this.category = category;
-        this.date = LocalDate.now();
-        this.hour = LocalTime.now();
+        this.date = stringDate();
     }
 
     public int getId() {
@@ -46,7 +48,7 @@ public class Transaction{
         return this.value;
     }
 
-    public LocalDate getDate(){
+    public String getDate(){
         return this.date;
     }
 
@@ -78,6 +80,12 @@ public class Transaction{
         this.category = category;
     }
 
+    private String stringDate(){
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return date.format(format);
+    }
+
     public void createTransaction(int id, String type, double value, String description, String category){
         Transaction transaction = null;
         if(type.equals("Ingreso")){
@@ -96,8 +104,12 @@ public class Transaction{
         filterType(transaction);
     }
 
-    public void selectTransaction(int option){
-        targetTransaction = transactions.get(option - 1);
+    public void selectTransaction(String type, int option){
+        if(type.equals("allList")){
+            targetTransaction = transactions.get(option - 1);
+        } else if(type.equals("filterList")){
+            targetTransaction = filterTransactions.get(option - 1);
+        }
     }
 
     public void updateTransaction(String type, int value, String description, String category) {
@@ -220,10 +232,10 @@ public class Transaction{
         System.out.println("");
     }
 
-    public ArrayList<Transaction> filter(){
-        ArrayList<Transaction> filterTransactions = new ArrayList<>();
+    public void filter(){
+        filterTransactions.clear();
 
-        if(this.dataFilter[0] != null){
+        if(!this.dataFilter[0].isEmpty()){
             for (int i = 0; i < this.getListUser().size(); i++) {
                 if(this.getListUser().get(i).type.equals(this.dataFilter[0])){
                     filterTransactions.add(this.getListUser().get(i));
@@ -231,7 +243,7 @@ public class Transaction{
             }
         }
 
-        if (this.dataFilter[1] != null){
+        if (!this.dataFilter[1].isEmpty()){
             for (int i = 0; i < getListUser().size(); i++) {
                 if(this.getListUser().get(i).value == Integer.parseInt(this.dataFilter[1])){
                     filterTransactions.add(this.getListUser().get(i));
@@ -239,7 +251,7 @@ public class Transaction{
             }
         }
 
-        if (this.dataFilter[2] != null){
+        if (!this.dataFilter[2].isEmpty()){
             for (int i = 0; i < getListUser().size(); i++) {
                 if(this.getListUser().get(i).category.equals(this.dataFilter[2])){
                     filterTransactions.add(this.getListUser().get(i));
@@ -247,19 +259,39 @@ public class Transaction{
             }
         }
 
-        if(this.dataFilter[3] != null){
+        if(!this.dataFilter[3].isEmpty()){
             for (int i = 0; i < this.getListUser().size(); i++) {
                 if(this.getListUser().get(i).getDate().equals(this.dataFilter[3])){
                     filterTransactions.add(this.getListUser().get(i));
                 }
             }
         }
-
-        return filterTransactions;
     }
 
-    public void printListFilter(ArrayList<Transaction> filter) {
-        filter.forEach(System.out::println);
+    public void emptyDatafilter(){
+        for (int i = 0; i < dataFilter.length; i++) {
+            if(dataFilter[i] == null){
+                dataFilter[i] = "";
+            }
+        }
+    }
+
+    public void clearDataFilter(){
+        for (int i = 0; i < dataFilter.length; i++) {
+            if(!dataFilter[i].isEmpty()){
+                dataFilter[i] = "";
+            }
+        }
+    }
+
+    public void printListFilter() {
+        for (int i = 0; i < filterTransactions.size(); i++) {
+            System.out.println(i+1 + ". " + filterTransactions.get(i));
+        }
+    }
+
+    public ArrayList<Transaction> getListFilter() {
+        return this.filterTransactions;
     }
 
     @Override

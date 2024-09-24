@@ -1,3 +1,5 @@
+package Classes;
+
 public class Gasto extends Transaction{
     private static String type = "Gasto";
 

@@ -1,4 +1,8 @@
+package Classes;
+
 import java.util.ArrayList;
+import Menu.Dashboard;
+import Menu.Index;
 
 public class User {
     private int id;
@@ -13,7 +17,6 @@ public class User {
 
     private static int userCounter;
     private static ArrayList<User> datos = new ArrayList<>();
-    public Transaction selectTransaction;
     private String selectCategory;
     //Atributos static: Se comparten entre todas las instancias. Solo existe una copia de la variable para toda la clase, por lo que las listas es ideal que solo exista una copia ya que aquí se guardarán a todos los usuarios
     //Métodos static: Pueden ser llamados sin necesidad de crear una instancia de la clase.
@@ -64,12 +67,13 @@ public class User {
         this.password = password;
     }
 
-    public static Boolean validateUser(String email, String password){
+    public static boolean validateUser(String email, String password){
         for (int i = 0; i < datos.size(); i++) {
             if(email.equals(datos.get(i).email) && password.equals(datos.get(i).password)){
                 System.out.println("Acceso autorizado.");
                 System.out.println("Bienvenido " + datos.get(i).name);
-                Main.dashboard(datos.get(i));
+                Dashboard.menu(datos.get(i));
+                System.out.println("");
                 return true;
             }
         }
@@ -103,8 +107,9 @@ public class User {
         return total;
     }
 
-    public void logout(){
-        Main.menu();
+    public void logout(User user){
+        user = null;
+        Index.main();
     }
 
     @Override

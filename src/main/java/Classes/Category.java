@@ -1,3 +1,5 @@
+package Classes;
+
 import java.util.ArrayList;
 
 public class Category {
@@ -41,7 +43,7 @@ public class Category {
         return this.categoriesUser.get(option - 1);
     }
 
-    public Boolean validateCategory(String category){
+    public boolean validateCategory(String category){
         for (int i = 0; i < this.categoriesByUserSize(); i++) {
             if (category.equals(this.categoriesUser.get(i))){
                 return true;

@@ -1,3 +1,5 @@
+package Classes;
+
 public class Ingreso extends Transaction{
     private static String type = "Ingreso";
 
