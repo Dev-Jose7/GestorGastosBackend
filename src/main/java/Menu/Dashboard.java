@@ -18,11 +18,11 @@ public class Dashboard {
             System.out.println("=========BALANCE=========");
             System.out.println("TOTAL: " + user.sumaTotal());
             System.out.println("En ingresos: " + user.sumaIngresos());
-            System.out.println("");
             System.out.println("En gastos: " + user.sumaGastos());
             System.out.println("======TRANSACCIONES======");
             System.out.println("De ingresos: ");
             user.getTransactions().printListIngresos();
+            System.out.println("");
             System.out.println("De gastos: ");
             user.getTransactions().printListGastos();
             System.out.println("========OPCIONES=========");

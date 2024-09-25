@@ -8,7 +8,7 @@ public class Transaction{
     private int id;
     private int user;
     private String type;
-    private double value;
+    private int value;
     private String description;
     private String category;
     private String date;
@@ -26,7 +26,7 @@ public class Transaction{
 
     public Transaction(){}
 
-    public Transaction(int user, String type, double value, String description, String category){
+    public Transaction(int user, String type, int value, String description, String category){
         this.id = ++counterTransaction;
         this.user = user;
         this.type = type;
@@ -86,7 +86,37 @@ public class Transaction{
         return date.format(format);
     }
 
-    public void createTransaction(int id, String type, double value, String description, String category){
+    private void filterType(Transaction transaction){
+        if(transaction.type.equals("Ingreso")){
+            this.ingresos.add(transaction);
+        }else if(transaction.type.equals("Gasto")){
+            this.gastos.add(transaction);
+        }
+    }
+
+    public void printListUser(){
+        for (int i = 0; i < transactions.size(); i++) {
+            System.out.println(i+1 + ". " + transactions.get(i));
+        }
+    }
+
+    public void printListIngresos(){
+        this.ingresos.forEach(System.out::println);
+    }
+
+    public void printListGastos(){
+        this.gastos.forEach(System.out::println);
+    }
+
+    public int getTotalIngreso(){
+        return this.ingresos.size();
+    }
+
+    public int getTotalGasto(){
+        return this.gastos.size();
+    }
+
+    public void createTransaction(int id, String type, int value, String description, String category){
         Transaction transaction = null;
         if(type.equals("Ingreso")){
             transaction = new Ingreso(id, value, description, category);
@@ -166,63 +196,6 @@ public class Transaction{
         printData();
     }
 
-    private void filterType(Transaction transaction){
-        if(transaction.type.equals("Ingreso")){
-            listIngresos(transaction);
-        }else if(transaction.type.equals("Gasto")){
-            listGastos(transaction);
-        }
-    }
-
-    private void listIngresos(Transaction transaction){
-        this.ingresos.add(transaction);
-    }
-
-    private void listGastos(Transaction transaction){
-        this.gastos.add(transaction);
-    }
-
-    public void printListUser(){
-        for (int i = 0; i < transactions.size(); i++) {
-            System.out.println(i+1 + ". " + transactions.get(i));
-        }
-    }
-
-    public void printListIngresos(){
-        this.ingresos.forEach(System.out::println);
-    }
-
-    public void printListGastos(){
-        this.gastos.forEach(System.out::println);
-    }
-
-//    public void printListType(ArrayList<Transaction> listTransaction){
-//        listTransaction.forEach(System.out::println);
-//    }
-
-    public int getTotalIngreso(){
-        return this.ingresos.size();
-    }
-
-    public int getTotalGasto(){
-        return this.gastos.size();
-    }
-
-//    private void printData(){
-//        System.out.println("");
-//        System.out.println("BASE DE DATOS");
-//        System.out.println("=======================================================================================================");
-//        System.out.println("TRANSACCIONES INGRESO");
-//        this.ingresos.forEach(System.out::println);
-//        System.out.println("=======================================================================================================");
-//
-//        System.out.println("=======================================================================================================");
-//        System.out.println("TRANSACCIONES GASTO");
-//        this.gastos.forEach(System.out::println);
-//        System.out.println("=======================================================================================================");
-//        System.out.println("");
-//    }
-
     private static void printData(){
         System.out.println("");
         System.out.println("BASE DE DATOS");
@@ -235,35 +208,40 @@ public class Transaction{
     public void filter(){
         filterTransactions.clear();
 
-        if(!this.dataFilter[0].isEmpty()){
-            for (int i = 0; i < this.getListUser().size(); i++) {
-                if(this.getListUser().get(i).type.equals(this.dataFilter[0])){
-                    filterTransactions.add(this.getListUser().get(i));
+        for (int i = 0; i < this.transactions.size(); i++) {
+            boolean status = true;
+
+            if(!dataFilter[0].isEmpty()){
+                if(!transactions.get(i).type.equals(dataFilter[0])){
+                    status = false;
                 }
             }
-        }
 
-        if (!this.dataFilter[1].isEmpty()){
-            for (int i = 0; i < getListUser().size(); i++) {
-                if(this.getListUser().get(i).value == Integer.parseInt(this.dataFilter[1])){
-                    filterTransactions.add(this.getListUser().get(i));
+            if (!dataFilter[1].isEmpty()) {
+                try {
+                    if (transactions.get(i).value != Integer.parseInt(dataFilter[1])) {
+                        status = false;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("El valor en el filtro no es un número válido");
+                    status = false;
                 }
             }
-        }
 
-        if (!this.dataFilter[2].isEmpty()){
-            for (int i = 0; i < getListUser().size(); i++) {
-                if(this.getListUser().get(i).category.equals(this.dataFilter[2])){
-                    filterTransactions.add(this.getListUser().get(i));
+            if (!dataFilter[2].isEmpty()) {
+                if (!transactions.get(i).category.equals(dataFilter[2])){
+                    status = false;
                 }
             }
-        }
 
-        if(!this.dataFilter[3].isEmpty()){
-            for (int i = 0; i < this.getListUser().size(); i++) {
-                if(this.getListUser().get(i).getDate().equals(this.dataFilter[3])){
-                    filterTransactions.add(this.getListUser().get(i));
+            if (!dataFilter[3].isEmpty()) {
+                if (!transactions.get(i).date.equals(dataFilter[3])){
+                    status = false;
                 }
+            }
+
+            if (status) {
+                filterTransactions.add(transactions.get(i));
             }
         }
     }

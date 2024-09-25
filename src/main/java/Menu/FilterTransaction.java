@@ -71,7 +71,7 @@ public class FilterTransaction {
             }
         }while(option > user.getTransactions().getListFilter().size());
 
-        user.getTransactions().selectTransaction("filterlist", option);
+        user.getTransactions().selectTransaction("filterList", option);
         int confirm;
 
         do {
