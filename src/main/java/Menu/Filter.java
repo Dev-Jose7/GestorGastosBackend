@@ -73,11 +73,30 @@ public class Filter {
         }
     }
 
-    public static void valueFilterTransaction(User user){
-        System.out.print("Digite un valor: ");
-        int option = Main.lector.nextInt();
+    public static void valueFilterTransaction(User user) {
+        String minor;
+        String major;
+        boolean status = false;
+        System.out.print("Digite un valor para establecer un inicio al rango: ");
+        minor = Main.lector.next();
+        user.getTransactions().getDataFilter()[1] = minor;
 
-        user.getTransactions().getDataFilter()[1] = option + "";
+        do{
+            System.out.println("Digite un valor mayor a " + user.getTransactions().getDataFilter()[1] + " para establecer un limite al rango");
+            System.out.println("Si no desea establecer un rango digite 0");
+            major = Main.lector.next();
+
+            user.getTransactions().getDataFilter()[2] = major;
+            if(Integer.parseInt(major) < Integer.parseInt(minor)){
+                status = true;
+            }else {
+                status = false;
+            }
+
+            if(major.equals("0")){
+                status = false;
+            }
+        }while(status);
     }
 
     public static void categoryFilterTransaction(User user){
@@ -94,13 +113,13 @@ public class Filter {
             }
         }while(option > user.getCatogories().categoriesByUserSize());
 
-        user.getTransactions().getDataFilter()[2] = category;
+        user.getTransactions().getDataFilter()[3] = category;
     }
 
     private static void dateFilterTransaction(User user) {
         System.out.println("Digite la fecha a consultar de la siguiente forma: 'dd-mm-yyyy'");
         String option = Main.lector.next();
 
-        user.getTransactions().getDataFilter()[3] = option;
+        user.getTransactions().getDataFilter()[4] = option;
     }
 }

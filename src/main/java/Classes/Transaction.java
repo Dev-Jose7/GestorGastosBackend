@@ -19,7 +19,7 @@ public class Transaction{
     private ArrayList<Transaction> filterTransactions = new ArrayList<>();
     private ArrayList<Transaction> ingresos = new ArrayList<Transaction>();
     private ArrayList<Transaction> gastos = new ArrayList<Transaction>();
-    private String[] dataFilter = new String[4];
+    private String[] dataFilter = new String[5];
 
     private static int counterTransaction;
     private static ArrayList<Transaction> transactionsData = new ArrayList<Transaction>();
@@ -208,6 +208,14 @@ public class Transaction{
     public void filter(){
         filterTransactions.clear();
 
+        if(dataFilter[1].equals("0")){
+            dataFilter[1] = "";
+        }
+
+        if(dataFilter[2].equals("0")){
+            dataFilter[2] = "";
+        }
+
         for (int i = 0; i < this.transactions.size(); i++) {
             boolean status = true;
 
@@ -219,9 +227,14 @@ public class Transaction{
 
             if (!dataFilter[1].isEmpty()) {
                 try {
-                    if (transactions.get(i).value != Integer.parseInt(dataFilter[1])) {
+                    if(dataFilter[2].isEmpty()){
+                        if (transactions.get(i).value != Integer.parseInt(dataFilter[1])) {
+                            status = false;
+                        }
+                    }else if (transactions.get(i).value < Integer.parseInt(dataFilter[1])) {
                         status = false;
                     }
+
                 } catch (NumberFormatException e) {
                     System.out.println("El valor en el filtro no es un número válido");
                     status = false;
@@ -229,13 +242,29 @@ public class Transaction{
             }
 
             if (!dataFilter[2].isEmpty()) {
-                if (!transactions.get(i).category.equals(dataFilter[2])){
+                try {
+                    if(dataFilter[1].isEmpty()){
+                        if (transactions.get(i).value != Integer.parseInt(dataFilter[2])){
+                            status = false;
+                        }
+                    } else if (transactions.get(i).value > Integer.parseInt(dataFilter[2])){
+                        status = false;
+                    }
+
+                } catch (NumberFormatException e) {
+                    System.out.println("El valor en el filtro no es un número válido");
                     status = false;
                 }
             }
 
             if (!dataFilter[3].isEmpty()) {
-                if (!transactions.get(i).date.equals(dataFilter[3])){
+                if (!transactions.get(i).category.equals(dataFilter[3])){
+                    status = false;
+                }
+            }
+
+            if (!dataFilter[4].isEmpty()) {
+                if (!transactions.get(i).date.equals(dataFilter[4])){
                     status = false;
                 }
             }
