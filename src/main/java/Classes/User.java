@@ -14,6 +14,8 @@ public class User {
     private double balance;
     private Transaction transactions;
     private Category catogories;
+    private TransactionManager transactionManager;
+    private TransactionFilter transactionFilter;
 
     private static int userCounter;
     private static ArrayList<User> datos = new ArrayList<>();
@@ -28,6 +30,8 @@ public class User {
         this.password = password;
         this.transactions = new Transaction();
         this.catogories = new Category();
+        this.transactionManager = new TransactionManager();
+        this.transactionFilter = new TransactionFilter();
         datos.add(this);
     }
 
@@ -53,6 +57,14 @@ public class User {
 
     public Transaction getTransactions(){
         return this.transactions;
+    }
+
+    public TransactionManager getTransactionManager(){
+        return this.transactionManager;
+    }
+
+    public TransactionFilter getTransactionFilter(){
+        return this.transactionFilter;
     }
 
     public void setName(String name){
@@ -82,9 +94,9 @@ public class User {
 
     public double sumaIngresos(){
         double total = 0;
-        for (int i = 0; i < this.transactions.getListUser().size(); i++) {
-            if(this.transactions.getListUser().get(i).getType().equals("Ingreso")){
-                total += this.transactions.getListUser().get(i).getValue();
+        for (int i = 0; i < this.transactionManager.getListUser().size(); i++) {
+            if(this.transactionManager.getListUser().get(i).getType().equals("Ingreso")){
+                total += this.transactionManager.getListUser().get(i).getValue();
             }
         }
         return total;
@@ -92,9 +104,9 @@ public class User {
 
     public double sumaGastos(){
         double total = 0;
-        for (int i = 0; i < this.transactions.getListUser().size(); i++) {
-            if(this.transactions.getListUser().get(i).getType().equals("Gasto")){
-                total += this.transactions.getListUser().get(i).getValue();
+        for (int i = 0; i < this.transactionManager.getListUser().size(); i++) {
+            if(this.transactionManager.getListUser().get(i).getType().equals("Gasto")){
+                total += this.transactionManager.getListUser().get(i).getValue();
             }
         }
         return total;

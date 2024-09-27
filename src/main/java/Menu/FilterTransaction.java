@@ -5,11 +5,11 @@ import Classes.Main;
 
 public class FilterTransaction {
     public static void resultFilterTransaction(User user){
-        user.getTransactions().filter();
+        user.getTransactionFilter().filter();
         System.out.println("");
         System.out.println("RESULTADO DE LA BUSQUEDA");
         System.out.println("=======================================================================================================");
-        user.getTransactions().printListFilter();
+        user.getTransactionFilter().printListFilter();
         System.out.println("=======================================================================================================");
         System.out.println("");
         System.out.println("Digite el número de la opción a utilizar");
@@ -43,15 +43,15 @@ public class FilterTransaction {
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("========MODIFICAR========");
-            user.getTransactions().printListFilter();
+            user.getTransactionFilter().printListFilter();
             System.out.print("Digite el número de la transacción a modificar: ");
             option = Main.lector.nextInt();
-            if(option > user.getTransactions().getListFilter().size()){
+            if(option > user.getTransactionFilter().getListFilter().size()){
                 System.out.println("Digite un número valido");
             }
-        }while (option > user.getTransactions().getListFilter().size());
+        }while (option > user.getTransactionFilter().getListFilter().size());
 
-        user.getTransactions().selectTransaction("filterList", option);
+        user.getTransactionManager().selectTransaction("filterList", option);
         Dashboard.statusUpdate = true;
         Dashboard.menuTransaction(user);
     }
@@ -62,21 +62,21 @@ public class FilterTransaction {
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("========ELIMINAR========");
-            user.getTransactions().printListFilter();
+            user.getTransactionFilter().printListFilter();
             System.out.print("Digite el número de la transacción a eliminar: ");
             option = Main.lector.nextInt();
 
-            if(option > user.getTransactions().getListFilter().size()){
+            if(option > user.getTransactionFilter().getListFilter().size()){
                 System.out.println("Digite un número valido");
             }
-        }while(option > user.getTransactions().getListFilter().size());
+        }while(option > user.getTransactionFilter().getListFilter().size());
 
-        user.getTransactions().selectTransaction("filterList", option);
+        user.getTransactionManager().selectTransaction("filterList", option);
         int confirm;
 
         do {
             System.out.println("Estas seguro de eliminar esta transacción");
-            System.out.println(user.getTransactions().getTargetTransaction());
+            System.out.println(user.getTransactionManager().getTargetTransaction());
             System.out.println("1. Si");
             System.out.println("2. No");
             confirm = Main.lector.nextInt();
@@ -84,7 +84,7 @@ public class FilterTransaction {
             switch (confirm) {
                 case 1:
                     System.out.println("Transacción eliminada");
-                    user.getTransactions().deleteTransaction();
+                    user.getTransactionManager().deleteTransaction();
                     Dashboard.menu(user);
                     break;
 

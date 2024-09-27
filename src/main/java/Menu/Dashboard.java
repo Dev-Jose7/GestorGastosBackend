@@ -21,10 +21,10 @@ public class Dashboard {
             System.out.println("En gastos: " + user.sumaGastos());
             System.out.println("======TRANSACCIONES======");
             System.out.println("De ingresos: ");
-            user.getTransactions().printListIngresos();
+            user.getTransactionManager().printListIngresos();
             System.out.println("");
             System.out.println("De gastos: ");
-            user.getTransactions().printListGastos();
+            user.getTransactionManager().printListGastos();
             System.out.println("========OPCIONES=========");
             System.out.println("1. Registrar transacción");
             System.out.println("2. Gestionar transacciones");
@@ -78,17 +78,17 @@ public class Dashboard {
         if(statusUpdate == false){
             switch (type){
                 case 1:
-                    user.getTransactions().createTransaction(user.getId(), "Ingreso", value, description, category);
+                    user.getTransactionManager().createTransaction(user.getId(), "Ingreso", value, description, category);
                     break;
                 case 2:
-                    user.getTransactions().createTransaction(user.getId(), "Gasto", value, description, category);
+                    user.getTransactionManager().createTransaction(user.getId(), "Gasto", value, description, category);
                     break;
             }
         }else if(statusUpdate == true){
             if(type == 1){
-                user.getTransactions().updateTransaction("Ingreso", value, description, category);
+                user.getTransactionManager().updateTransaction("Ingreso", value, description, category);
             } else if (type == 2){
-                user.getTransactions().updateTransaction("Gasto", value, description, category);
+                user.getTransactionManager().updateTransaction("Gasto", value, description, category);
             }
             statusUpdate = false;
         }
@@ -136,8 +136,8 @@ public class Dashboard {
             System.out.println("======CUENTA USUARIO=====");
             System.out.println("Nombre: " + user.getName());
             System.out.println("Email: " + user.getEmail());
-            System.out.println("Ingresos registrados: " + user.getTransactions().getTotalIngreso());
-            System.out.println("Gastos registrados: " + user.getTransactions().getTotalGasto());
+            System.out.println("Ingresos registrados: " + user.getTransactionManager().getTotalIngreso());
+            System.out.println("Gastos registrados: " + user.getTransactionManager().getTotalGasto());
             System.out.println("1. Dashboard");
             System.out.println("2. Modificar datos");
             System.out.println("3. Lista de categorias");

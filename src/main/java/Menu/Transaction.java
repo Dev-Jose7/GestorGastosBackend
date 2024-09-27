@@ -10,15 +10,15 @@ public class Transaction {
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("========MODIFICAR========");
-            user.getTransactions().printListUser();
+            user.getTransactionManager().printListUser();
             System.out.print("Digite el número de la transacción a modificar: ");
             option = Main.lector.nextInt();
-            if(option > user.getTransactions().getListUser().size()){
+            if(option > user.getTransactionManager().getListUser().size()){
                 System.out.println("Digite un número valido");
             }
-        }while (option > user.getTransactions().getListUser().size());
+        }while (option > user.getTransactionManager().getListUser().size());
 
-        user.getTransactions().selectTransaction("allList", option);
+        user.getTransactionManager().selectTransaction("allList", option);
         Dashboard.statusUpdate = true;
         Dashboard.menuTransaction(user);
     }
@@ -29,21 +29,21 @@ public class Transaction {
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("========ELIMINAR========");
-            user.getTransactions().printListUser();
+            user.getTransactionManager().printListUser();
             System.out.print("Digite el número de la transacción a eliminar: ");
             option = Main.lector.nextInt();
 
-            if(option > user.getTransactions().getListUser().size()){
+            if(option > user.getTransactionManager().getListUser().size()){
                 System.out.println("Digite un número valido");
             }
-        }while(option > user.getTransactions().getListUser().size());
+        }while(option > user.getTransactionManager().getListUser().size());
 
-        user.getTransactions().selectTransaction("allList", option);
+        user.getTransactionManager().selectTransaction("allList", option);
         int confirm;
 
         do {
             System.out.println("Estas seguro de eliminar esta transacción");
-            System.out.println(user.getTransactions().getTargetTransaction());
+            System.out.println(user.getTransactionManager().getTargetTransaction());
             System.out.println("1. Si");
             System.out.println("2. No");
             confirm = Main.lector.nextInt();
@@ -51,7 +51,7 @@ public class Transaction {
             switch (confirm) {
                 case 1:
                     System.out.println("Transacción eliminada");
-                    user.getTransactions().deleteTransaction();
+                    user.getTransactionManager().deleteTransaction();
                     Dashboard.menu(user);
                     break;
 
