@@ -7,9 +7,15 @@ public class TransactionManager {
     private ArrayList<Transaction> transactions = new ArrayList<>();
     private ArrayList<Transaction> ingresos = new ArrayList<Transaction>();
     private ArrayList<Transaction> gastos = new ArrayList<Transaction>();
+    private TransactionFilter transactionFilter;
 
+    public TransactionManager(){
+        this.transactionFilter = new TransactionFilter(this.transactions);
+    }
 
-    public TransactionManager(){}
+    public TransactionFilter getTransactionFilter() {
+        return transactionFilter;
+    }
 
     public int getTotalIngreso(){
         return this.ingresos.size();
@@ -52,9 +58,9 @@ public class TransactionManager {
     public void selectTransaction(String type, int option){
         if(type.equals("allList")){
             targetTransaction = transactions.get(option - 1);
-        } // else if(type.equals("filterList")){
-//            targetTransaction = filterTransactions.get(option - 1);
-//        }
+        } else if(type.equals("filterList")){
+            targetTransaction = this.transactionFilter.getListFilter().get(option - 1);
+        }
     }
 
     public void updateTransaction(String type, int value, String description, String category) {

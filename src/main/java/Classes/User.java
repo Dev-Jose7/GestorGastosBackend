@@ -15,7 +15,6 @@ public class User {
     private Transaction transactions;
     private Category catogories;
     private TransactionManager transactionManager;
-    private TransactionFilter transactionFilter;
 
     private static int userCounter;
     private static ArrayList<User> datos = new ArrayList<>();
@@ -31,7 +30,6 @@ public class User {
         this.transactions = new Transaction();
         this.catogories = new Category();
         this.transactionManager = new TransactionManager();
-        this.transactionFilter = new TransactionFilter();
         datos.add(this);
     }
 
@@ -61,10 +59,6 @@ public class User {
 
     public TransactionManager getTransactionManager(){
         return this.transactionManager;
-    }
-
-    public TransactionFilter getTransactionFilter(){
-        return this.transactionFilter;
     }
 
     public void setName(String name){
