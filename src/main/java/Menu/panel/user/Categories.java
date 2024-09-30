@@ -1,7 +1,8 @@
-package Menu;
+package Menu.panel.user;
 
-import Classes.User;
+import Classes.account.User;
 import Classes.Main;
+import Menu.panel.Dashboard;
 
 public class Categories {
     public static void categoriesUser(User user){
@@ -31,7 +32,7 @@ public class Categories {
                     Dashboard.selectUser(user);
                     break;
             }
-        }while(option > 3);
+        }while(option < 1 || option > 3);
     }
 
     public static void addCategory(User user) {
@@ -87,7 +88,7 @@ public class Categories {
                     categoriesUser(user);
                     break;
             }
-        }while(confirm > 2);
+        }while(confirm < 1 || confirm > 2);
 
         Dashboard.menu(user);
     }

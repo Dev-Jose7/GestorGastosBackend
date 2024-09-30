@@ -1,4 +1,4 @@
-package Classes;
+package Classes.operation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,13 +14,15 @@ public class Transaction{
     private String date;
     private String hour;
 
-
-
+    private ArrayList<Transaction> transactions = new ArrayList<>();
+    private ArrayList<Transaction> ingresos = new ArrayList<Transaction>();
+    private ArrayList<Transaction> gastos = new ArrayList<Transaction>();
+    private ArrayList<Transaction> filters = new ArrayList<>();
 
     private static int counterTransaction;
     private static ArrayList<Transaction> transactionsData = new ArrayList<Transaction>();
 
-    public Transaction(){}
+    public Transaction() {}
 
     public Transaction(int user, String type, int value, String description, String category){
         this.id = ++counterTransaction;
@@ -52,6 +54,22 @@ public class Transaction{
         return this.date;
     }
 
+    public ArrayList<Transaction> getListUser(){
+        return transactions;
+    }
+
+    public ArrayList<Transaction> getListIngreso(){
+        return this.ingresos;
+    }
+
+    public ArrayList<Transaction> getListGasto(){
+        return this.gastos;
+    }
+
+    public ArrayList<Transaction> getListFilter(){
+        return this.filters;
+    }
+
     public static ArrayList<Transaction> getTransactionsData() {
         return transactionsData;
     }
@@ -78,17 +96,20 @@ public class Transaction{
         return date.format(format);
     }
 
+    public static int totalTransactions(){
+        return transactionsData.size();
+    }
 
     public static void printData(){
         System.out.println("");
-        System.out.println("BASE DE DATOS");
+        System.out.println("BASE DE DATOS - TRANSACCIONES");
         System.out.println("=======================================================================================================");
-        Transaction.transactionsData.forEach(System.out::println);
+        for (int i = 0; i < transactionsData.size(); i++) {
+            System.out.println(i+1 + ". " + transactionsData.get(i));
+        }
         System.out.println("=======================================================================================================");
         System.out.println("");
     }
-
-
 
     @Override
     public String toString() {

@@ -1,21 +1,11 @@
-package Classes;
+package Classes.operation;
 
-import java.util.ArrayList;
-
-public class TransactionFilter {
-
+public class TransactionFilter extends Transaction{
+    private final Transaction transactions;
     private String[] dataFilter = new String[5];
-    private ArrayList<Transaction> filterTransactions = new ArrayList<>();
-    private ArrayList<Transaction> transactions;
 
-    public TransactionFilter(){}
-
-    public TransactionFilter(ArrayList<Transaction> transactions){
+    public TransactionFilter(Transaction transactions){
         this.transactions = transactions;
-    }
-
-    public ArrayList<Transaction> getListFilter() {
-        return this.filterTransactions;
     }
 
     public String[] getDataFilter(){
@@ -23,33 +13,33 @@ public class TransactionFilter {
     }
 
     public void filter(){
-        filterTransactions.clear();
-        System.out.println(this.transactions);
+        this.transactions.getListFilter().clear();
+        System.out.println(this.transactions.getListUser().size());
 
-        if(dataFilter[1].equals("0")){
-            dataFilter[1] = "";
-        }
+//        if(dataFilter[1].equals("0")){
+//            dataFilter[1] = "";
+//        }
 
         if(dataFilter[2].equals("0")){
             dataFilter[2] = "";
         }
 
-        for (int i = 0; i < this.transactions.size(); i++) {
+        for (int i = 0; i < this.transactions.getListUser().size(); i++) {
             boolean status = true;
 
             if(!dataFilter[0].isEmpty()){
-                if(!transactions.get(i).getType().equals(dataFilter[0])){
+                if(!this.transactions.getListUser().get(i).getType().equals(dataFilter[0])){
                     status = false;
                 }
             }
 
-            if (!dataFilter[1].isEmpty()) {
+            if (!dataFilter[1].isEmpty()) { //Si hay datos
                 try {
-                    if(dataFilter[2].isEmpty()){
-                        if (transactions.get(i).getValue() != Integer.parseInt(dataFilter[1])) {
+                    if(dataFilter[2].isEmpty()){ //Si no hay datos
+                        if (this.transactions.getListUser().get(i).getValue() != Integer.parseInt(dataFilter[1])) {
                             status = false;
                         }
-                    }else if (transactions.get(i).getValue() < Integer.parseInt(dataFilter[1])) {
+                    }else if (this.transactions.getListUser().get(i).getValue() < Integer.parseInt(dataFilter[1])) {
                         status = false;
                     }
 
@@ -62,10 +52,10 @@ public class TransactionFilter {
             if (!dataFilter[2].isEmpty()) {
                 try {
                     if(dataFilter[1].isEmpty()){
-                        if (transactions.get(i).getValue() != Integer.parseInt(dataFilter[2])){
+                        if (this.transactions.getListUser().get(i).getValue() != Integer.parseInt(dataFilter[2])){
                             status = false;
                         }
-                    } else if (transactions.get(i).getValue() > Integer.parseInt(dataFilter[2])){
+                    } else if (this.transactions.getListUser().get(i).getValue() > Integer.parseInt(dataFilter[2])){
                         status = false;
                     }
 
@@ -76,19 +66,19 @@ public class TransactionFilter {
             }
 
             if (!dataFilter[3].isEmpty()) {
-                if (!transactions.get(i).getCategory().equals(dataFilter[3])){
+                if (!this.transactions.getListUser().get(i).getCategory().equals(dataFilter[3])){
                     status = false;
                 }
             }
 
             if (!dataFilter[4].isEmpty()) {
-                if (!transactions.get(i).getDate().equals(dataFilter[4])){
+                if (!this.transactions.getListUser().get(i).getDate().equals(dataFilter[4])){
                     status = false;
                 }
             }
 
             if (status) {
-                filterTransactions.add(transactions.get(i));
+                this.transactions.getListFilter().add(this.transactions.getListUser().get(i));
             }
         }
     }
@@ -110,8 +100,8 @@ public class TransactionFilter {
     }
 
     public void printListFilter() {
-        for (int i = 0; i < filterTransactions.size(); i++) {
-            System.out.println(i+1 + ". " + filterTransactions.get(i));
+        for (int i = 0; i < this.transactions.getListFilter().size(); i++) {
+            System.out.println(i+1 + ". " + this.transactions.getListFilter().get(i));
         }
     }
 }

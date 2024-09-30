@@ -1,9 +1,9 @@
-package Classes;
+package Classes.tag;
 
 import java.util.ArrayList;
 
 public class Category {
-    private static ArrayList<String> categoriesMain= new ArrayList<>();
+    private ArrayList<String> categoriesMain = new ArrayList<>();
     private ArrayList<String> categoriesUser = new ArrayList<>();
 
     public Category(){

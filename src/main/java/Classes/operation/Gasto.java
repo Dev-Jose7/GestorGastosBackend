@@ -1,6 +1,6 @@
-package Classes;
+package Classes.operation;
 
-public class Gasto extends Transaction{
+public class Gasto extends Transaction {
     private static String type = "Gasto";
 
     public Gasto(int user, int value, String description, String category){

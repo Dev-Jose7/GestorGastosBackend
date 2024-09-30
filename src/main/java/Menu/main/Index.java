@@ -1,7 +1,7 @@
-package Menu;
+package Menu.main;
 
 import Classes.Main;
-import Classes.User;
+import Classes.account.User;
 
 public class Index {
     public static void main() {
@@ -31,7 +31,7 @@ public class Index {
                     System.out.println("Digite una opcion correcta");
                     break;
             }
-        } while (option > 3);
+        } while (option < 1 || option > 3);
     }
 
     public static void menuSesion(){

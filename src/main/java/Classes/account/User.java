@@ -1,8 +1,13 @@
-package Classes;
+package Classes.account;
 
 import java.util.ArrayList;
-import Menu.Dashboard;
-import Menu.Index;
+
+import Classes.tag.Category;
+import Classes.operation.Transaction;
+import Classes.operation.TransactionFilter;
+import Classes.operation.TransactionManager;
+import Menu.panel.Dashboard;
+import Menu.main.Index;
 
 public class User {
     private int id;
@@ -12,12 +17,14 @@ public class User {
     private String type;
     private String bank;
     private double balance;
+    private UserBalance userBalance;
     private Transaction transactions;
     private Category catogories;
     private TransactionManager transactionManager;
+    private TransactionFilter transactionFilter;
 
     private static int userCounter;
-    private static ArrayList<User> datos = new ArrayList<>();
+    private static ArrayList<User> userData = new ArrayList<>();
     private String selectCategory;
     //Atributos static: Se comparten entre todas las instancias. Solo existe una copia de la variable para toda la clase, por lo que las listas es ideal que solo exista una copia ya que aquí se guardarán a todos los usuarios
     //Métodos static: Pueden ser llamados sin necesidad de crear una instancia de la clase.
@@ -27,10 +34,12 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.userBalance = new UserBalance(this);
         this.transactions = new Transaction();
         this.catogories = new Category();
-        this.transactionManager = new TransactionManager();
-        datos.add(this);
+        this.transactionManager = new TransactionManager(this.transactions);
+        this.transactionFilter =  new TransactionFilter(this.transactions);
+        userData.add(this);
     }
 
     public int getId(){
@@ -49,6 +58,10 @@ public class User {
         return this.password;
     }
 
+    public UserBalance getUserBalance(){
+        return this.userBalance;
+    }
+
     public Category getCatogories(){
         return this.catogories;
     }
@@ -59,6 +72,10 @@ public class User {
 
     public TransactionManager getTransactionManager(){
         return this.transactionManager;
+    }
+
+    public TransactionFilter getTransactionFilter(){
+        return this.transactionFilter;
     }
 
     public void setName(String name){
@@ -73,12 +90,16 @@ public class User {
         this.password = password;
     }
 
+    public static int totalUsers(){
+        return userData.size();
+    }
+
     public static boolean validateUser(String email, String password){
-        for (int i = 0; i < datos.size(); i++) {
-            if(email.equals(datos.get(i).email) && password.equals(datos.get(i).password)){
+        for (int i = 0; i < userData.size(); i++) {
+            if(email.equals(userData.get(i).email) && password.equals(userData.get(i).password)){
                 System.out.println("Acceso autorizado.");
-                System.out.println("Bienvenido " + datos.get(i).name);
-                Dashboard.menu(datos.get(i));
+                System.out.println("Bienvenido " + userData.get(i).name);
+                Dashboard.menu(userData.get(i));
                 System.out.println("");
                 return true;
             }
@@ -86,45 +107,29 @@ public class User {
         return false;
     }
 
-    public double sumaIngresos(){
-        double total = 0;
-        for (int i = 0; i < this.transactionManager.getListUser().size(); i++) {
-            if(this.transactionManager.getListUser().get(i).getType().equals("Ingreso")){
-                total += this.transactionManager.getListUser().get(i).getValue();
-            }
-        }
-        return total;
-    }
-
-    public double sumaGastos(){
-        double total = 0;
-        for (int i = 0; i < this.transactionManager.getListUser().size(); i++) {
-            if(this.transactionManager.getListUser().get(i).getType().equals("Gasto")){
-                total += this.transactionManager.getListUser().get(i).getValue();
-            }
-        }
-        return total;
-    }
-
-    public double sumaTotal() {
-        double ingreso = sumaIngresos();
-        double gasto = sumaGastos();
-        double total = ingreso - gasto;
-        return total;
-    }
-
     public void logout(User user){
         user = null;
         Index.main();
     }
 
+    public void printData(){
+        System.out.println("");
+        System.out.println("BASE DE DATOS - USUARIOS");
+        System.out.println("=======================================================================================================");
+        for (int i = 0; i < userData.size(); i++) {
+            System.out.println(i+1 + ". " + userData.get(i));
+        }
+        System.out.println("=======================================================================================================");
+        System.out.println("");
+    }
+
     @Override
     public String toString() {
-        return "User{" +
+        return "[" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                '}';
+                ']';
     }
 }

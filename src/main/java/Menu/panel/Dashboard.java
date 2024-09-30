@@ -1,11 +1,12 @@
-package Menu;
+package Menu.panel;
 
-import Classes.Category;
 import Classes.Main;
-import Classes.User;
-import Menu.Categories;
-
-import java.sql.SQLOutput;
+import Classes.account.User;
+import Menu.panel.operation.Filter;
+import Menu.panel.operation.Transaction;
+import Menu.panel.user.Account;
+import Menu.panel.user.Admin;
+import Menu.panel.user.Categories;
 
 public class Dashboard {
     public static boolean statusUpdate;
@@ -16,9 +17,9 @@ public class Dashboard {
             System.out.println("======MONEY MANAGER======");
             System.out.println("========DASHBOARD========");
             System.out.println("=========BALANCE=========");
-            System.out.println("TOTAL: " + user.sumaTotal());
-            System.out.println("En ingresos: " + user.sumaIngresos());
-            System.out.println("En gastos: " + user.sumaGastos());
+            System.out.println("TOTAL: " + user.getUserBalance().sumaTotal());
+            System.out.println("En ingresos: " + user.getUserBalance().sumaIngresos());
+            System.out.println("En gastos: " + user.getUserBalance().sumaGastos());
             System.out.println("======TRANSACCIONES======");
             System.out.println("De ingresos: ");
             user.getTransactionManager().printListIngresos();
@@ -39,7 +40,7 @@ public class Dashboard {
             }else if(option == 3){
                 selectUser(user);
             }
-        }while(option > 3);
+        }while(option < 1 || option > 3);
     }
 
     public static void menuTransaction(User user){
@@ -54,7 +55,7 @@ public class Dashboard {
             System.out.println("1. Ingreso");
             System.out.println("2. Gasto");
             type = Main.lector.nextInt();
-        }while(type > 2);
+        }while(type < 1 || type > 2);
 
         System.out.print("Digite un valor: ");
         int value = Main.lector.nextInt();
@@ -73,7 +74,7 @@ public class Dashboard {
             }else if(option <= 0 && option > user.getCatogories().categoriesByUserSize()){
                 System.out.println("Digite un número entre 1 y " + user.getCatogories().categoriesByUserSize());
             }
-        }while(option > user.getCatogories().categoriesByUserSize());
+        }while(option < 1 || option > user.getCatogories().categoriesByUserSize());
 
         if(statusUpdate == false){
             switch (type){
@@ -126,10 +127,11 @@ public class Dashboard {
                     System.out.println("Opción invalida");
                     break;
             }
-        }while (option > 2);
+        }while (option < 1 || option > 2);
     }
 
     public static void selectUser(User user){
+        boolean statusAdmin = false;
         int option;
         do{
             System.out.println("======MONEY MANAGER======");
@@ -138,34 +140,42 @@ public class Dashboard {
             System.out.println("Email: " + user.getEmail());
             System.out.println("Ingresos registrados: " + user.getTransactionManager().getTotalIngreso());
             System.out.println("Gastos registrados: " + user.getTransactionManager().getTotalGasto());
-            System.out.println("1. Dashboard");
-            System.out.println("2. Modificar datos");
-            System.out.println("3. Lista de categorias");
-            System.out.println("4. Cerrar sesión");
+            System.out.println("1. Modificar datos");
+            System.out.println("2. Lista de categorias");
+            System.out.println("3. Dashboard principal");
+            if(user.getId() == 1){
+                statusAdmin = true;
+                System.out.println("4. Dashboard Admin");
+            }
+            System.out.println("0. Cerrar sesión");
             System.out.println("=========================");
             option = Main.lector.nextInt();
 
             switch (option){
-                case 1:
-                    menu(user);
+                case 0:
+                    user.logout(user);
                     break;
 
-                case 2:
+                case 1:
                     Account.updateUser(user);
                     break;
 
-                case 3:
+                case 2:
                     Categories.categoriesUser(user);
                     break;
 
+                case 3:
+                    menu(user);
+                    break;
+
                 case 4:
-                    user.logout(user);
+                    Admin.dashboard(user);
                     break;
 
                 default:
                     System.out.println("Digite una opcion correcta");
                     break;
             }
-        }while(option > 3);
+        }while((option < 0 || option > 3) && statusAdmin == false);
     }
 }

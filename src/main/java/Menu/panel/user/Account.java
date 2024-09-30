@@ -1,7 +1,8 @@
-package Menu;
+package Menu.panel.user;
 
 import Classes.Main;
-import Classes.User;
+import Classes.account.User;
+import Menu.panel.Dashboard;
 
 public class Account {
     public static void updateUser(User user){
@@ -60,7 +61,7 @@ public class Account {
                     System.out.println("Opción no valida");
                     break;
             }
-        }while (option > 4);
+        }while (option < 1 || option > 4);
 
         Dashboard.menu(user);
     }

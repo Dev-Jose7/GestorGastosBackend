@@ -1,7 +1,9 @@
 package Classes;
 
 import java.util.Scanner;
-import Menu.Index;
+
+import Classes.account.User;
+import Menu.main.Index;
 
 public class Main {
     public static Scanner lector = new Scanner(System.in);

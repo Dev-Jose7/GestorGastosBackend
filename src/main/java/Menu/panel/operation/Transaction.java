@@ -1,7 +1,8 @@
-package Menu;
+package Menu.panel.operation;
 
-import Classes.User;
+import Classes.account.User;
 import Classes.Main;
+import Menu.panel.Dashboard;
 
 public class Transaction {
     public static void updateTransaction(User user){
@@ -13,10 +14,10 @@ public class Transaction {
             user.getTransactionManager().printListUser();
             System.out.print("Digite el número de la transacción a modificar: ");
             option = Main.lector.nextInt();
-            if(option > user.getTransactionManager().getListUser().size()){
+            if(option > user.getTransactions().getListUser().size()){
                 System.out.println("Digite un número valido");
             }
-        }while (option > user.getTransactionManager().getListUser().size());
+        }while (option < 1 || option > user.getTransactions().getListUser().size());
 
         user.getTransactionManager().selectTransaction("allList", option);
         Dashboard.statusUpdate = true;
@@ -33,10 +34,10 @@ public class Transaction {
             System.out.print("Digite el número de la transacción a eliminar: ");
             option = Main.lector.nextInt();
 
-            if(option > user.getTransactionManager().getListUser().size()){
+            if(option > user.getTransactions().getListUser().size()){
                 System.out.println("Digite un número valido");
             }
-        }while(option > user.getTransactionManager().getListUser().size());
+        }while(option < 1 || option > user.getTransactions().getListUser().size());
 
         user.getTransactionManager().selectTransaction("allList", option);
         int confirm;
@@ -63,6 +64,6 @@ public class Transaction {
                     System.out.println("Opción no valida");
                     break;
             }
-        }while (confirm > 2);
+        }while (confirm < 1 || confirm > 2);
     }
 }
