@@ -1,12 +1,28 @@
-package Menu.panel.user;
+package Menu.panel.user.normal;
 
 import Classes.Main;
 import Classes.account.User;
 import Menu.panel.Dashboard;
+import Menu.panel.user.suser.Admin;
+
+import java.util.ArrayList;
 
 public class Account {
+    public static void selectUser(User user, ArrayList<User> databaseUsers){
+        int option;
+        printDatabase(databaseUsers);
+
+        do{
+            System.out.print("Digite el número del usuario a seleccionar: ");
+            option = Main.lector.nextInt();
+        }while(option < 1 || option > databaseUsers.size());
+
+        user.getUserManager().selectTransaction(option, databaseUsers);
+    }
+
     public static void updateUser(User user){
         int option;
+
         do {
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
@@ -46,7 +62,6 @@ public class Account {
                         if(password.equals(passwordConfirm)){
                             System.out.println("Su contraseña ha sido cambiada");
                             user.setPassword(password);
-                            Dashboard.menu(user);
                         }else {
                             System.out.println("Las contraseñas no coinciden");
                         }
@@ -63,6 +78,51 @@ public class Account {
             }
         }while (option < 1 || option > 4);
 
-        Dashboard.menu(user);
+        if(Admin.statusUpdateAdmin){
+            Admin.dashboard(Admin.suser);
+            Admin.statusUpdateAdmin = false;
+        }else {
+            Dashboard.menu(user);
+        }
+    }
+
+    public static void deleteUser(User user){
+        int confirm;
+
+        do {
+            System.out.println("");
+            System.out.println("======MONEY MANAGER======");
+            System.out.println("=====ELIMINAR USUARIO====");
+            System.out.println("Estas seguro de eliminar esta transacción");
+            System.out.println(user.getUserManager().getTargetUser());
+            System.out.println("1. Si");
+            System.out.println("2. No");
+            confirm = Main.lector.nextInt();
+
+            switch (confirm) {
+                case 1:
+                    System.out.println("Usuario eliminado");
+                    user.getUserManager().deleteUser();
+                    break;
+
+                case 2:
+                    Admin.dashboard(user);
+                    break;
+
+                default:
+                    System.out.println("Opción no valida");
+                    break;
+            }
+        }while (confirm < 1 || confirm > 2);
+
+        Admin.dashboard(user);
+    }
+
+    public static void printDatabase(ArrayList<User> databaseUser){
+        System.out.println("");
+        for (int i = 0; i < databaseUser.size(); i++) {
+            System.out.println(i+1 + ". " + databaseUser.get(i));
+        }
+        System.out.println("");
     }
 }

@@ -1,5 +1,7 @@
 package Classes.operation;
 
+import java.util.ArrayList;
+
 public class TransactionFilter extends Transaction{
     private final Transaction transactions;
     private String[] dataFilter = new String[5];
@@ -12,9 +14,9 @@ public class TransactionFilter extends Transaction{
         return this.dataFilter;
     }
 
-    public void filter(){
+    public void filter(ArrayList<Transaction> databaseTransactions){
         this.transactions.getListFilter().clear();
-        System.out.println(this.transactions.getListUser().size());
+        System.out.println(databaseTransactions.size());
 
 //        if(dataFilter[1].equals("0")){
 //            dataFilter[1] = "";
@@ -24,11 +26,11 @@ public class TransactionFilter extends Transaction{
             dataFilter[2] = "";
         }
 
-        for (int i = 0; i < this.transactions.getListUser().size(); i++) {
+        for (int i = 0; i < databaseTransactions.size(); i++) {
             boolean status = true;
 
             if(!dataFilter[0].isEmpty()){
-                if(!this.transactions.getListUser().get(i).getType().equals(dataFilter[0])){
+                if(!databaseTransactions.get(i).getType().equals(dataFilter[0])){
                     status = false;
                 }
             }

@@ -1,4 +1,4 @@
-package Menu.panel.user;
+package Menu.panel.user.normal;
 
 import Classes.account.User;
 import Classes.Main;

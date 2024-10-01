@@ -3,10 +3,10 @@ package Menu.panel;
 import Classes.Main;
 import Classes.account.User;
 import Menu.panel.operation.Filter;
-import Menu.panel.operation.Transaction;
-import Menu.panel.user.Account;
-import Menu.panel.user.Admin;
-import Menu.panel.user.Categories;
+import Menu.panel.operation.PanelTransaction;
+import Menu.panel.user.normal.Account;
+import Menu.panel.user.suser.Admin;
+import Menu.panel.user.normal.Categories;
 
 public class Dashboard {
     public static boolean statusUpdate;
@@ -112,15 +112,15 @@ public class Dashboard {
 
             switch (option){
                 case 1:
-                    Transaction.updateTransaction(user);
+                    PanelTransaction.updateTransaction(user, user.getTransactions().getListUser());
                     break;
 
                 case 2:
-                    Transaction.deleteTransaction(user);
+                    PanelTransaction.deleteTransaction(user, user.getTransactions().getListUser());
                     break;
 
                 case 3:
-                    Filter.filterTransaction(user);
+                    Filter.filterTransaction(user, user.getTransactions().getListUser());
                     break;
 
                 default:

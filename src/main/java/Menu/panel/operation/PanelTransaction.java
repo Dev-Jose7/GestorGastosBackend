@@ -2,44 +2,47 @@ package Menu.panel.operation;
 
 import Classes.account.User;
 import Classes.Main;
+import Classes.operation.Transaction;
 import Menu.panel.Dashboard;
 
-public class Transaction {
-    public static void updateTransaction(User user){
+import java.util.ArrayList;
+
+public class PanelTransaction {
+    public static void updateTransaction(User user, ArrayList<Transaction> databaseTransactions){
         int option;
         do {
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("========MODIFICAR========");
-            user.getTransactionManager().printListUser();
+            databaseTransactions.forEach(System.out::println);
             System.out.print("Digite el número de la transacción a modificar: ");
             option = Main.lector.nextInt();
-            if(option > user.getTransactions().getListUser().size()){
+            if(option > databaseTransactions.size()){
                 System.out.println("Digite un número valido");
             }
-        }while (option < 1 || option > user.getTransactions().getListUser().size());
+        }while (option < 1 || option > databaseTransactions.size());
 
-        user.getTransactionManager().selectTransaction("allList", option);
+        user.getTransactionManager().selectTransaction(option, databaseTransactions);
         Dashboard.statusUpdate = true;
         Dashboard.menuTransaction(user);
     }
 
-    public static void deleteTransaction(User user){
+    public static void deleteTransaction(User user, ArrayList<Transaction> databaseTransactions){
         int option;
         do{
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("========ELIMINAR========");
-            user.getTransactionManager().printListUser();
+            databaseTransactions.forEach(System.out::println);
             System.out.print("Digite el número de la transacción a eliminar: ");
             option = Main.lector.nextInt();
 
-            if(option > user.getTransactions().getListUser().size()){
+            if(option > databaseTransactions.size()){
                 System.out.println("Digite un número valido");
             }
-        }while(option < 1 || option > user.getTransactions().getListUser().size());
+        }while(option < 1 || option > databaseTransactions.size());
 
-        user.getTransactionManager().selectTransaction("allList", option);
+        user.getTransactionManager().selectTransaction(option, databaseTransactions);
         int confirm;
 
         do {

@@ -1,5 +1,7 @@
 package Classes.operation;
 
+import java.util.ArrayList;
+
 public class TransactionManager extends Transaction{
     private final Transaction transactions;
     private Transaction targetTransaction;
@@ -38,12 +40,8 @@ public class TransactionManager extends Transaction{
         filterType(transaction);
     }
 
-    public void selectTransaction(String type, int option){
-        if(type.equals("allList")){
-            targetTransaction = this.transactions.getListUser().get(option - 1);
-        } else if(type.equals("filterList")){
-            targetTransaction = this.transactions.getListFilter().get(option - 1);
-        }
+    public void selectTransaction(int option, ArrayList<Transaction> database){
+        targetTransaction = database.get(option - 1);
     }
 
     public void updateTransaction(String type, int value, String description, String category) {

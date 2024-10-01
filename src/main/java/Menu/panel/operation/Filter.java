@@ -2,9 +2,13 @@ package Menu.panel.operation;
 
 import Classes.account.User;
 import Classes.Main;
+import Classes.operation.Transaction;
+
+import java.util.ArrayList;
 
 public class Filter {
-    public static void filterTransaction(User user){
+
+    public static void filterTransaction(User user, ArrayList<Transaction> databaseTransactions){
         String option;
         do{
             System.out.println("");
@@ -32,7 +36,7 @@ public class Filter {
                     break;
 
                 case "0":
-                    FilterTransaction.resultFilterTransaction(user);
+                    FilterTransaction.resultFilterTransaction(user, databaseTransactions);
                     break;
 
                 case "1":

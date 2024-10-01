@@ -1,6 +1,7 @@
 package Classes.account;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import Classes.tag.Category;
 import Classes.operation.Transaction;
@@ -18,6 +19,8 @@ public class User {
     private String bank;
     private double balance;
     private UserBalance userBalance;
+    private UserManager userManager;
+    private UserFilter userFilter;
     private Transaction transactions;
     private Category catogories;
     private TransactionManager transactionManager;
@@ -25,6 +28,8 @@ public class User {
 
     private static int userCounter;
     private static ArrayList<User> userData = new ArrayList<>();
+
+    private ArrayList<User> filters = new ArrayList<>();
     private String selectCategory;
     //Atributos static: Se comparten entre todas las instancias. Solo existe una copia de la variable para toda la clase, por lo que las listas es ideal que solo exista una copia ya que aquí se guardarán a todos los usuarios
     //Métodos static: Pueden ser llamados sin necesidad de crear una instancia de la clase.
@@ -35,6 +40,10 @@ public class User {
         this.email = email;
         this.password = password;
         this.userBalance = new UserBalance(this);
+        if(this.id == 1){
+            this.userManager = new UserManager(this);
+            this.userFilter = new UserFilter(this);
+        }
         this.transactions = new Transaction();
         this.catogories = new Category();
         this.transactionManager = new TransactionManager(this.transactions);
@@ -58,8 +67,24 @@ public class User {
         return this.password;
     }
 
+    public static ArrayList<User> getUserData(){
+        return userData;
+    }
+
+    public ArrayList<User> getListFilter() {
+        return this.filters;
+    }
+
     public UserBalance getUserBalance(){
         return this.userBalance;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public UserFilter getUserFilter(){
+        return this.userFilter;
     }
 
     public Category getCatogories(){
