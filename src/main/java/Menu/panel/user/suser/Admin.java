@@ -131,12 +131,12 @@ public class Admin {
     }
 
     public static void updateTransactionsData(User user){
-        Transaction.printData();
-        PanelTransaction.updateTransaction(user, Transaction.getTransactionsData());
+        PanelTransaction.selectTransaction(user, Transaction.getTransactionsData());
+        PanelTransaction.updateTransaction(user);
     }
 
     public static void deleteTransactionsData(User user){
-        Transaction.printData();
-        PanelTransaction.deleteTransaction(user, Transaction.getTransactionsData());
+        PanelTransaction.selectTransaction(user, Transaction.getTransactionsData());
+        PanelTransaction.deleteTransaction(user);
     }
 }

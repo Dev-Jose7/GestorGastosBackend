@@ -38,6 +38,10 @@ public class Transaction{
         return this.id;
     }
 
+    public int getUser(){
+        return this.user;
+    }
+
     public String getType(){
         return this.type;
     }

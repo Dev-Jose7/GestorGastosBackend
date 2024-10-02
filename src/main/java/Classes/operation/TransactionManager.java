@@ -37,7 +37,7 @@ public class TransactionManager extends Transaction{
     private void addTransaction(Transaction transaction){
         this.transactions.getListUser().add(transaction);
         Transaction.getTransactionsData().add(transaction);
-        filterType(transaction);
+//        updateListType();
     }
 
     public void selectTransaction(int option, ArrayList<Transaction> database){
@@ -72,25 +72,10 @@ public class TransactionManager extends Transaction{
         this.targetTransaction.setValue(value);
         this.targetTransaction.setCategory(description);
         this.targetTransaction.setCategory(category);
-
 //        Transaction.printData();
     }
 
     public void deleteTransaction(){
-        for (int i = 0; i < this.transactions.getListIngreso().size(); i++) {
-            if(targetTransaction == this.transactions.getListIngreso().get(i)){
-                this.transactions.getListIngreso().remove(i);
-                break;
-            }
-        }
-
-        for (int i = 0; i < this.transactions.getListGasto().size(); i++) {
-            if(targetTransaction == this.transactions.getListGasto().get(i)){
-                this.transactions.getListGasto().remove(i);
-                break;
-            }
-        }
-
         for (int i = 0; i < this.transactions.getListUser().size(); i++) {
             if(targetTransaction == this.transactions.getListUser().get(i)){
                 this.transactions.getListUser().remove(i);
@@ -98,21 +83,49 @@ public class TransactionManager extends Transaction{
             }
         }
 
+        for (int i = 0; i < Transaction.getTransactionsData().size(); i++) {
+            if(targetTransaction == Transaction.getTransactionsData().get(i)){
+                Transaction.getTransactionsData().remove(i);
+                break;
+            }
+        }
 //        Transaction.printData();
     }
 
-    private void filterType(Transaction transaction){
-        if(transaction.getType().equals("Ingreso")){
-            this.transactions.getListIngreso().add(transaction);
-        }else if(transaction.getType().equals("Gasto")){
-            this.transactions.getListGasto().add(transaction);
+    public void updateListUser(int idUser){
+        if(!this.transactions.getListUser().isEmpty()){
+            this.transactions.getListUser().clear();
+        }
+
+        for (int i = 0; i < Transaction.getTransactionsData().size(); i++) {
+            if(idUser == Transaction.getTransactionsData().get(i).getUser()){
+                this.transactions.getListUser().add(Transaction.getTransactionsData().get(i));
+            }
         }
     }
 
-    public void printListUser(){
-        for (int i = 0; i < this.transactions.getListUser().size(); i++) {
-            System.out.println(i+1 + ". " + this.transactions.getListUser().get(i));
+    public void updateListType(){
+        if(!this.transactions.getListIngreso().isEmpty() || !this.transactions.getListGasto().isEmpty()){
+            this.transactions.getListIngreso().clear();
+            this.transactions.getListGasto().clear();
         }
+
+        for (int i = 0; i < this.transactions.getListUser().size(); i++) {
+            if(this.transactions.getListUser().get(i).getType().equals("Ingreso")){
+                this.transactions.getListIngreso().add(this.transactions.getListUser().get(i));
+
+            }else if (this.transactions.getListUser().get(i).getType().equals("Gasto")){
+                this.transactions.getListGasto().add(this.transactions.getListUser().get(i));
+            }
+        }
+    }
+
+    public void printDatabase(ArrayList<Transaction> databaseTransaction){
+        System.out.println("");
+        for (int i = 0; i < databaseTransaction.size(); i++) {
+            System.out.println(i+1 + ". " + databaseTransaction.get(i));
+        }
+        System.out.println("");
     }
 
     public void printListIngresos(){

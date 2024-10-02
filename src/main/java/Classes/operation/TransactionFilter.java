@@ -38,10 +38,10 @@ public class TransactionFilter extends Transaction{
             if (!dataFilter[1].isEmpty()) { //Si hay datos
                 try {
                     if(dataFilter[2].isEmpty()){ //Si no hay datos
-                        if (this.transactions.getListUser().get(i).getValue() != Integer.parseInt(dataFilter[1])) {
+                        if (databaseTransactions.get(i).getValue() != Integer.parseInt(dataFilter[1])) {
                             status = false;
                         }
-                    }else if (this.transactions.getListUser().get(i).getValue() < Integer.parseInt(dataFilter[1])) {
+                    }else if (databaseTransactions.get(i).getValue() < Integer.parseInt(dataFilter[1])) {
                         status = false;
                     }
 
@@ -54,10 +54,10 @@ public class TransactionFilter extends Transaction{
             if (!dataFilter[2].isEmpty()) {
                 try {
                     if(dataFilter[1].isEmpty()){
-                        if (this.transactions.getListUser().get(i).getValue() != Integer.parseInt(dataFilter[2])){
+                        if (databaseTransactions.get(i).getValue() != Integer.parseInt(dataFilter[2])){
                             status = false;
                         }
-                    } else if (this.transactions.getListUser().get(i).getValue() > Integer.parseInt(dataFilter[2])){
+                    } else if (databaseTransactions.get(i).getValue() > Integer.parseInt(dataFilter[2])){
                         status = false;
                     }
 
@@ -68,19 +68,19 @@ public class TransactionFilter extends Transaction{
             }
 
             if (!dataFilter[3].isEmpty()) {
-                if (!this.transactions.getListUser().get(i).getCategory().equals(dataFilter[3])){
+                if (!databaseTransactions.get(i).getCategory().equals(dataFilter[3])){
                     status = false;
                 }
             }
 
             if (!dataFilter[4].isEmpty()) {
-                if (!this.transactions.getListUser().get(i).getDate().equals(dataFilter[4])){
+                if (!databaseTransactions.get(i).getDate().equals(dataFilter[4])){
                     status = false;
                 }
             }
 
             if (status) {
-                this.transactions.getListFilter().add(this.transactions.getListUser().get(i));
+                this.transactions.getListFilter().add(databaseTransactions.get(i));
             }
         }
     }

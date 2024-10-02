@@ -10,14 +10,14 @@ import java.util.ArrayList;
 public class Account {
     public static void selectUser(User user, ArrayList<User> databaseUsers){
         int option;
-        printDatabase(databaseUsers);
+        user.getUserManager().printDatabase(databaseUsers);
 
         do{
             System.out.print("Digite el número del usuario a seleccionar: ");
             option = Main.lector.nextInt();
         }while(option < 1 || option > databaseUsers.size());
 
-        user.getUserManager().selectTransaction(option, databaseUsers);
+        user.getUserManager().selectUser(option, databaseUsers);
     }
 
     public static void updateUser(User user){

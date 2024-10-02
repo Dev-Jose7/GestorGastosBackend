@@ -42,10 +42,12 @@ public class FilterTransaction {
     }
 
     public static void updateTransactionFilter(User user, ArrayList<Transaction> databaseFilter){
-        PanelTransaction.updateTransaction(user, databaseFilter);
+        PanelTransaction.selectTransaction(user, databaseFilter);
+        PanelTransaction.updateTransaction(user);
     }
 
     public static void deleteTransactionFilter(User user, ArrayList<Transaction> databaseFilter){
-        PanelTransaction.deleteTransaction(user, databaseFilter);
+        PanelTransaction.selectTransaction(user, databaseFilter);
+        PanelTransaction.deleteTransaction(user);
     }
 }

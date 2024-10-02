@@ -1,8 +1,5 @@
 package Classes.account;
 
-import Classes.operation.Transaction;
-import Menu.main.Index;
-
 import java.util.ArrayList;
 
 public class UserManager{
@@ -17,7 +14,7 @@ public class UserManager{
         return targetUser;
     }
 
-    public void selectTransaction(int option, ArrayList<User> databaseUsers){
+    public void selectUser(int option, ArrayList<User> databaseUsers){
         this.targetUser = databaseUsers.get(option - 1);
     }
 
@@ -28,5 +25,13 @@ public class UserManager{
                 break;
             }
         }
+    }
+
+    public void printDatabase(ArrayList<User> databaseUser){
+        System.out.println("");
+        for (int i = 0; i < databaseUser.size(); i++) {
+            System.out.println(i+1 + ". " + databaseUser.get(i));
+        }
+        System.out.println("");
     }
 }

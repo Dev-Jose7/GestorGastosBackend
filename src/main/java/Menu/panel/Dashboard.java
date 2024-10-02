@@ -13,6 +13,8 @@ public class Dashboard {
     public static void menu(User user) {
         int option;
         do{
+            user.getTransactionManager().updateListUser(user.getId());
+            user.getTransactionManager().updateListType();
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("========DASHBOARD========");
@@ -44,18 +46,24 @@ public class Dashboard {
     }
 
     public static void menuTransaction(User user){
-        int option = 0;
-        int type= 0;
+        int option;
+        int type;
+
         System.out.println("");
         System.out.println("======MONEY MANAGER======");
         System.out.println("=====REG TRANSACCION=====");
+        System.out.println("Para cancelar digite cero (0)");
 
         do {
             System.out.println("Digite el tipo de transacción: ");
             System.out.println("1. Ingreso");
             System.out.println("2. Gasto");
             type = Main.lector.nextInt();
-        }while(type < 1 || type > 2);
+
+            if(type == 0){
+                menu(user);
+            }
+        }while(type < 0 || type > 2);
 
         System.out.print("Digite un valor: ");
         int value = Main.lector.nextInt();
@@ -74,7 +82,11 @@ public class Dashboard {
             }else if(option <= 0 && option > user.getCatogories().categoriesByUserSize()){
                 System.out.println("Digite un número entre 1 y " + user.getCatogories().categoriesByUserSize());
             }
-        }while(option < 1 || option > user.getCatogories().categoriesByUserSize());
+
+            if(option == 0){
+                menu(user);
+            }
+        }while(option < 0 || option > user.getCatogories().categoriesByUserSize());
 
         if(statusUpdate == false){
             switch (type){
@@ -112,11 +124,13 @@ public class Dashboard {
 
             switch (option){
                 case 1:
-                    PanelTransaction.updateTransaction(user, user.getTransactions().getListUser());
+                    PanelTransaction.selectTransaction(user, user.getTransactions().getListUser());
+                    PanelTransaction.updateTransaction(user);
                     break;
 
                 case 2:
-                    PanelTransaction.deleteTransaction(user, user.getTransactions().getListUser());
+                    PanelTransaction.selectTransaction(user, user.getTransactions().getListUser());
+                    PanelTransaction.deleteTransaction(user);
                     break;
 
                 case 3:
