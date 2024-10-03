@@ -10,12 +10,21 @@ import java.util.ArrayList;
 public class Account {
     public static void selectUser(User user, ArrayList<User> databaseUsers){
         int option;
+        System.out.println("");
+        System.out.println("LISTA DE OPCIONES");
+        System.out.println("=======================================================================================================");
         user.getUserManager().printDatabase(databaseUsers);
+        System.out.println("=======================================================================================================");
+        System.out.println("");
 
         do{
+            System.out.println("Para cancelar digite cero (0)");
             System.out.print("Digite el número del usuario a seleccionar: ");
             option = Main.lector.nextInt();
-        }while(option < 1 || option > databaseUsers.size());
+            if(option == 0){
+                Admin.dashboard(user);
+            }
+        }while(option < 0 || option > databaseUsers.size());
 
         user.getUserManager().selectUser(option, databaseUsers);
     }
@@ -27,6 +36,7 @@ public class Account {
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("====MODIFICAR USUARIO====");
+            System.out.println("Para cancelar digite cero (0)");
             System.out.println("1. Cambiar nombre: " + user.getName());
             System.out.println("2. Cambiar email: " + user.getEmail());
             System.out.println("3. Cambiar contraseña: " + user.getPassword());
@@ -34,6 +44,9 @@ public class Account {
             option = Main.lector.nextInt();
 
             switch (option){
+                case 0:
+                    break;
+
                 case 1:
                     System.out.print("Digite un nuevo nombre: ");
                     String name = Main.lector.next();
@@ -76,14 +89,17 @@ public class Account {
                     System.out.println("Opción no valida");
                     break;
             }
-        }while (option < 1 || option > 4);
+        }while (option < 0 || option > 4);
 
         if(Admin.statusUpdateAdmin){
-            Admin.dashboard(Admin.suser);
             Admin.statusUpdateAdmin = false;
-        }else {
+            System.out.println("Operación cancelada");
+            Admin.dashboard(Admin.suser);
+        }else if(option == 0) {
             Dashboard.menu(user);
         }
+
+        Dashboard.menu(user);
     }
 
     public static void deleteUser(User user){
@@ -93,7 +109,7 @@ public class Account {
             System.out.println("");
             System.out.println("======MONEY MANAGER======");
             System.out.println("=====ELIMINAR USUARIO====");
-            System.out.println("Estas seguro de eliminar esta transacción");
+            System.out.println("Estas seguro de eliminar a este usuario");
             System.out.println(user.getUserManager().getTargetUser());
             System.out.println("1. Si");
             System.out.println("2. No");

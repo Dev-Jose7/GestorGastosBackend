@@ -124,6 +124,8 @@ public class Admin {
     }
 
     public static void filterTransactionsData(User user){
+        suser = user;
+        statusUpdateAdmin = true;
         Transaction.printData();
         System.out.println("Total de transacciones creadas: " + Transaction.totalTransactions());
 
@@ -131,11 +133,15 @@ public class Admin {
     }
 
     public static void updateTransactionsData(User user){
+        suser = user;
+        statusUpdateAdmin = true;
         PanelTransaction.selectTransaction(user, Transaction.getTransactionsData());
         PanelTransaction.updateTransaction(user);
     }
 
     public static void deleteTransactionsData(User user){
+        suser = user;
+        statusUpdateAdmin = true;
         PanelTransaction.selectTransaction(user, Transaction.getTransactionsData());
         PanelTransaction.deleteTransaction(user);
     }

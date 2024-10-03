@@ -36,7 +36,7 @@ public class UserFilter{
             }
 
             if (!dataFilter[2].isEmpty()) {
-                if (!User.getUserData().get(i).getEmail().equals(dataFilter[4])){
+                if (!User.getUserData().get(i).getEmail().equals(dataFilter[2])){
                     status = false;
                 }
             }

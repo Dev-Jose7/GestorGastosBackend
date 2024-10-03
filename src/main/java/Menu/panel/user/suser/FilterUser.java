@@ -14,38 +14,43 @@ public class FilterUser {
         user.getUserFilter().printListFilter();
         System.out.println("=======================================================================================================");
         System.out.println("");
-        System.out.println("Digite el número de la opción a utilizar");
+        int option;
 
-        System.out.println("1. Ingresar al usuario");
-        System.out.println("2. Modificar usuario");
-        System.out.println("3. Eliminar usuario");
-        System.out.println("4. Dashboard");
-        int option = Main.lector.nextInt();
+        do{
+            System.out.println("Digite el número de la opción a utilizar");
+            System.out.println("1. Ingresar al usuario");
+            System.out.println("2. Modificar usuario");
+            System.out.println("3. Eliminar usuario");
+            System.out.println("4. Dashboard");
+            option = Main.lector.nextInt();
 
-        switch(option){
-            case 1:
-                selectUserFilter(user);
-                break;
+            switch(option){
+                case 1:
+                    selectUserFilter(user);
+                    break;
 
-            case 2:
-                updateUserFilter(user);
-                break;
+                case 2:
+                    updateUserFilter(user);
+                    break;
 
-            case 3:
-                deleteUserFilter(user);
-                break;
+                case 3:
+                    deleteUserFilter(user);
+                    break;
 
-            case 4:
-                Dashboard.menu(user);
-                break;
+                case 4:
+                    Admin.dashboard(user);
+                    break;
 
-            default:
-                System.out.println("Opción invalida");
-                break;
-        }
+                default:
+                    System.out.println("Opción invalida");
+                    break;
+            }
+        }while(option < 1 || option > 4);
     }
 
     public static void selectUserFilter(User user){
+        Admin.statusUpdateAdmin = true;
+        Admin.suser = user;
         Account.selectUser(user, user.getListFilter());
         Dashboard.menu(user.getUserManager().getTargetUser());
     }

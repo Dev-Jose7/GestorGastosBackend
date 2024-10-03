@@ -4,6 +4,7 @@ import Classes.account.User;
 import Classes.Main;
 import Classes.operation.Transaction;
 import Menu.panel.Dashboard;
+import Menu.panel.user.suser.Admin;
 
 import java.util.ArrayList;
 
@@ -16,37 +17,50 @@ public class FilterTransaction {
         user.getTransactionFilter().printListFilter();
         System.out.println("=======================================================================================================");
         System.out.println("");
-        System.out.println("Digite el número de la opción a utilizar");
-        System.out.println("1. Modificar transacción");
-        System.out.println("2. Eliminar transacción");
-        System.out.println("3. Dashboard");
-        int option = Main.lector.nextInt();
+        int option;
 
-        switch(option){
-            case 1:
-                updateTransactionFilter(user, user.getTransactions().getListFilter());
-                break;
+        do {
+            System.out.println("Digite el número de la opción a utilizar");
+            System.out.println("1. Modificar transacción");
+            System.out.println("2. Eliminar transacción");
+            System.out.println("3. Dashboard");
+            option = Main.lector.nextInt();
 
-            case 2:
-                deleteTransactionFilter(user, user.getTransactions().getListFilter());
-                break;
+            switch(option){
+                case 1:
+                    updateTransactionFilter(user, user.getTransactions().getListFilter());
+                    break;
 
-            case 3:
-                Dashboard.menu(user);
-                break;
+                case 2:
+                    deleteTransactionFilter(user, user.getTransactions().getListFilter());
+                    break;
 
-            default:
-                System.out.println("Opción invalida");
-                break;
-        }
+                case 3:
+                    if(Admin.statusUpdateAdmin){
+                        Admin.dashboard(Admin.suser);
+                    }else {
+                        Dashboard.menu(user);
+                    }
+                    break;
+
+                default:
+                    System.out.println("Opción invalida");
+                    break;
+            }
+        }while(option < 0 || option > 3);
+
     }
 
     public static void updateTransactionFilter(User user, ArrayList<Transaction> databaseFilter){
+        Admin.suser = user;
+        Admin.statusUpdateAdmin = true;
         PanelTransaction.selectTransaction(user, databaseFilter);
         PanelTransaction.updateTransaction(user);
     }
 
     public static void deleteTransactionFilter(User user, ArrayList<Transaction> databaseFilter){
+        Admin.suser = user;
+        Admin.statusUpdateAdmin = true;
         PanelTransaction.selectTransaction(user, databaseFilter);
         PanelTransaction.deleteTransaction(user);
     }

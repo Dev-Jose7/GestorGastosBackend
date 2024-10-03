@@ -28,10 +28,8 @@ public class UserManager{
     }
 
     public void printDatabase(ArrayList<User> databaseUser){
-        System.out.println("");
         for (int i = 0; i < databaseUser.size(); i++) {
             System.out.println(i+1 + ". " + databaseUser.get(i));
         }
-        System.out.println("");
     }
 }

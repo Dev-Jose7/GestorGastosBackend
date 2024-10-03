@@ -32,6 +32,9 @@ public class Dashboard {
             System.out.println("1. Registrar transacción");
             System.out.println("2. Gestionar transacciones");
             System.out.println("3. Consultar cuenta");
+            if(Admin.statusUpdateAdmin){
+                System.out.println("0. Dashboard Admin");
+            }
             System.out.println("=========================");
             option = Main.lector.nextInt();
 
@@ -41,6 +44,9 @@ public class Dashboard {
                 manageTransaction(user);
             }else if(option == 3){
                 selectUser(user);
+            } else if (option == 0 && Admin.statusUpdateAdmin) {
+                Admin.statusUpdateAdmin = false;
+                Admin.dashboard(Admin.suser);
             }
         }while(option < 1 || option > 3);
     }
@@ -60,7 +66,11 @@ public class Dashboard {
             System.out.println("2. Gasto");
             type = Main.lector.nextInt();
 
-            if(type == 0){
+            if(type == 0 && Admin.statusUpdateAdmin){
+                Admin.statusUpdateAdmin = false;
+                System.out.println("Operación cancelada");
+                Admin.dashboard(Admin.suser);
+            } else if(type == 0){
                 menu(user);
             }
         }while(type < 0 || type > 2);
@@ -79,11 +89,15 @@ public class Dashboard {
             option = Main.lector.nextInt();
             if(option > 0 && option <= user.getCatogories().categoriesByUserSize()){
                 category = user.getCatogories().selectCategory(option);
-            }else if(option <= 0 && option > user.getCatogories().categoriesByUserSize()){
+            }else if(option < 0 && option > user.getCatogories().categoriesByUserSize()){
                 System.out.println("Digite un número entre 1 y " + user.getCatogories().categoriesByUserSize());
             }
 
-            if(option == 0){
+            if(option == 0 && Admin.statusUpdateAdmin){
+                Admin.statusUpdateAdmin = false;
+                System.out.println("Operación cancelada");
+                Admin.dashboard(Admin.suser);
+            } else if (option == 0){
                 menu(user);
             }
         }while(option < 0 || option > user.getCatogories().categoriesByUserSize());
@@ -106,7 +120,12 @@ public class Dashboard {
             statusUpdate = false;
         }
 
-        menu(user);
+        if(Admin.statusUpdateAdmin){
+            Admin.statusUpdateAdmin = false;
+            Admin.dashboard(Admin.suser);
+        }else {
+            menu(user);
+        }
     }
 
     public static void manageTransaction(User user){

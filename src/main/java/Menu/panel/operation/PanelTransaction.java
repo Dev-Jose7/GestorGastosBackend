@@ -4,21 +4,32 @@ import Classes.account.User;
 import Classes.Main;
 import Classes.operation.Transaction;
 import Menu.panel.Dashboard;
+import Menu.panel.user.suser.Admin;
 
 import java.util.ArrayList;
 
 public class PanelTransaction {
     public static void selectTransaction(User user, ArrayList<Transaction> databaseTransactions){
         int option;
+        System.out.println("");
+        System.out.println("LISTA DE OPCIONES");
+        System.out.println("=======================================================================================================");
         user.getTransactionManager().printDatabase(databaseTransactions);
+        System.out.println("=======================================================================================================");
+        System.out.println("");
 
         do{
             System.out.println("Para cancelar digite cero (0)");
             System.out.print("Digite el número de la transacción a seleccionar: ");
             option = Main.lector.nextInt();
-            if(option == 0){
+            if(option == 0 && Admin.statusUpdateAdmin){
+                Admin.statusUpdateAdmin = false;
+                System.out.println("Operación cancelada");
+                Admin.dashboard(Admin.suser);
+            } else if (option == 0){
                 Dashboard.menu(user);
             }
+
         }while(option < 0 || option > databaseTransactions.size());
 
         user.getTransactionManager().selectTransaction(option, databaseTransactions);
@@ -47,13 +58,24 @@ public class PanelTransaction {
 
             switch (confirm) {
                 case 1:
-                    System.out.println("Transacción eliminada");
                     user.getTransactionManager().deleteTransaction();
-                    Dashboard.menu(user);
+                    System.out.println("Transacción eliminada");
+                    if(Admin.statusUpdateAdmin){
+                        Admin.statusUpdateAdmin = false;
+                        Admin.dashboard(user);
+                    }else {
+                        Dashboard.menu(user);
+                    }
                     break;
 
                 case 2:
-                    Dashboard.menu(user);
+                    if(Admin.statusUpdateAdmin){
+                        Admin.statusUpdateAdmin = false;
+                        System.out.println("Operación cancelada");
+                        Admin.dashboard(user);
+                    }else {
+                        Dashboard.menu(user);
+                    }
                     break;
 
                 default:

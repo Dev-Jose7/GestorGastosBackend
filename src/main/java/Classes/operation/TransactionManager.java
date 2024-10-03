@@ -70,7 +70,7 @@ public class TransactionManager extends Transaction{
         //Si el tipo de la transacción no cambia solo se procede ajustar los demás valores
         //Usan herencia
         this.targetTransaction.setValue(value);
-        this.targetTransaction.setCategory(description);
+        this.targetTransaction.setDescription(description);
         this.targetTransaction.setCategory(category);
 //        Transaction.printData();
     }
@@ -121,11 +121,9 @@ public class TransactionManager extends Transaction{
     }
 
     public void printDatabase(ArrayList<Transaction> databaseTransaction){
-        System.out.println("");
         for (int i = 0; i < databaseTransaction.size(); i++) {
             System.out.println(i+1 + ". " + databaseTransaction.get(i));
         }
-        System.out.println("");
     }
 
     public void printListIngresos(){
