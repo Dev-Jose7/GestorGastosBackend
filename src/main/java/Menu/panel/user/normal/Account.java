@@ -93,10 +93,10 @@ public class Account {
 
         if(Admin.statusUpdateAdmin){
             Admin.statusUpdateAdmin = false;
-            System.out.println("Operación cancelada");
+            if(option == 0){
+                System.out.println("Operación cancelada");
+            }
             Admin.dashboard(Admin.suser);
-        }else if(option == 0) {
-            Dashboard.menu(user);
         }
 
         Dashboard.menu(user);

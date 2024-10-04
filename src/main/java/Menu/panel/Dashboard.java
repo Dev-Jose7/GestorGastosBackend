@@ -32,7 +32,7 @@ public class Dashboard {
             System.out.println("1. Registrar transacción");
             System.out.println("2. Gestionar transacciones");
             System.out.println("3. Consultar cuenta");
-            if(Admin.statusUpdateAdmin){
+            if(!Admin.statusUpdateAdmin && user.getId() != 1){
                 System.out.println("0. Dashboard Admin");
             }
             System.out.println("=========================");
@@ -44,11 +44,11 @@ public class Dashboard {
                 manageTransaction(user);
             }else if(option == 3){
                 selectUser(user);
-            } else if (option == 0 && Admin.statusUpdateAdmin) {
+            } else if (option == 0 && Admin.suser != null) {
                 Admin.statusUpdateAdmin = false;
                 Admin.dashboard(Admin.suser);
             }
-        }while(option < 1 || option > 3);
+        }while(option < 0 || option > 3);
     }
 
     public static void menuTransaction(User user){

@@ -13,31 +13,34 @@ import java.util.ArrayList;
 import static Classes.Main.lector;
 
 public class Admin {
-    public static User suser;
+    public static User suser = null;
     public static boolean statusUpdateAdmin = false;
     public static void dashboard(User user){
-        System.out.println("");
-        System.out.println("======MONEY MANAGER======");
-        System.out.println("=====DASHBOARD ADMIN=====");
-        System.out.println("===========MENU==========");
-        System.out.println("1. Gestionar usuarios");
-        System.out.println("2. Gestionar transacciones");
-        System.out.println("3. Dashboard principal");
-        int option = lector.nextInt();
+        int option;
+        do{
+            System.out.println("");
+            System.out.println("======MONEY MANAGER======");
+            System.out.println("=====DASHBOARD ADMIN=====");
+            System.out.println("===========MENU==========");
+            System.out.println("1. Gestionar usuarios");
+            System.out.println("2. Gestionar transacciones");
+            System.out.println("3. Dashboard principal");
+            option = lector.nextInt();
 
-        switch (option){
-            case 1:
-                usersManager(user);
-                break;
+            switch (option){
+                case 1:
+                    usersManager(user);
+                    break;
 
-            case 2:
-                transactionsManager(user);
-                break;
+                case 2:
+                    transactionsManager(user);
+                    break;
 
-            case 3:
-                Dashboard.menu(user);
-                break;
-        }
+                case 3:
+                    Dashboard.menu(user);
+                    break;
+            }
+        }while (option < 1 || option > 3);
     }
 
     public static void usersManager(User user){
@@ -69,7 +72,7 @@ public class Admin {
                     System.out.println("Opción no valida");
                     break;
             }
-        }while(option > 1);
+        }while(option < 1 || option > 3);
     }
 
     public static void filterUserData(User user){

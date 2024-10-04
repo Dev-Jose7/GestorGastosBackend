@@ -49,7 +49,7 @@ public class FilterUser {
     }
 
     public static void selectUserFilter(User user){
-        Admin.statusUpdateAdmin = true;
+        Admin.statusUpdateAdmin = false;
         Admin.suser = user;
         Account.selectUser(user, user.getListFilter());
         Dashboard.menu(user.getUserManager().getTargetUser());
